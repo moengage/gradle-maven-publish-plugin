@@ -16,6 +16,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("java-gradle-plugin")
     alias(libs.plugins.kotlin.jvm)
+    alias(moengageInternal.plugins.plugin.kotlin.serialization)
     `kotlin-dsl`
     `maven-publish`
     signing
@@ -49,4 +50,7 @@ tasks.withType(KotlinCompile::class.java) {
 dependencies {
     implementation(gradleApi())
     implementation(moengageInternal.kotlinStdLib)
+    implementation((moengageInternal.kotlinSerialization))
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.serialisation.converter)
 }

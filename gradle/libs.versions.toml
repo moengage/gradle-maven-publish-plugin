@@ -2,6 +2,8 @@
 kotlin = "1.9.23"
 
 [libraries]
+retrofit = { module = "com.squareup.retrofit2:retrofit", version = "2.9.0" }
+retrofit-serialisation-converter = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version = "1.0.0" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
