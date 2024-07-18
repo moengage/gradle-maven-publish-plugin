@@ -82,4 +82,13 @@ internal class NexusRepository(
             throw NetworkCallException("Failed to drop staging repository with id - $repositoryId")
         }
     }
+
+    fun getRepositoryData(repositoryId: String): NexusStagingRepositoryData? {
+        val response = service.getRepositoryDetails(repositoryId).execute()
+        if (response.isSuccessful) {
+            println("::info::no open repository with id $repositoryId or some network error")
+            return null
+        }
+        return response.body()
+    }
 }

@@ -4,6 +4,7 @@ import com.moengage.internal.model.NexusArtifactCreateRequest
 import com.moengage.internal.model.NexusArtifactCreateResponse
 import com.moengage.internal.model.NexusPromoteRequest
 import com.moengage.internal.model.NexusStagingRepository
+import com.moengage.internal.model.NexusStagingRepositoryData
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -66,4 +67,9 @@ internal interface NexusService {
         @Path("profileId") profileId: String,
         @Body promoteRequest: NexusPromoteRequest
     ): Call<Unit>
+
+    @GET("staging/repository/{repositoryId}")
+    fun getRepositoryDetails(
+        @Path("repositoryId") repositoryId: String
+    ): Call<NexusStagingRepositoryData>
 }
