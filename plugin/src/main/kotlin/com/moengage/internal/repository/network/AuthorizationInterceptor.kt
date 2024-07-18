@@ -11,6 +11,12 @@ private const val userAgentHeader = "User-Agent"
 private const val acceptedEncodingHeader = "Accept-Encoding"
 private const val pluginAgentIdentifier = "moengage-release-plugin"
 
+/**
+ * OktHttps interceptor to add the required authorization header in the request
+ *
+ * @author Abhishek Kumar
+ * @since 1.0.0
+ */
 internal class AuthorizationInterceptor(
     private val mavenCentralPortal: MavenCentralPortal,
     private val username: String,

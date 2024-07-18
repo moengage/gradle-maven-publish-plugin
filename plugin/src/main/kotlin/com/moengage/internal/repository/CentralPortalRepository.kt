@@ -1,5 +1,53 @@
 package com.moengage.internal.repository
 
+import com.moengage.internal.exception.NetworkCallException
+import com.moengage.internal.model.CentralPortalDeploymentStatus
 import com.moengage.internal.repository.network.CentralPortalService
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
 
-internal class CentralPortalRepository(private val service: CentralPortalService)
+/**
+ * Repository class for [CentralPortal], uses [CentralPortalService] for network calls
+ *
+ * @author Abhishek Kumar
+ * @since 1.0.0
+ */
+internal class CentralPortalRepository(
+    private val service: CentralPortalService
+) {
+
+    /**
+     * Upload the artifact to the portal and release if [publishingType] equals automatically
+     *
+     * @param name readable name for the artifact
+     * @param publishingType "AUTOMATIC" / "USER_MANAGED"
+     * @param file artifact file to upload
+     * @return the deployment id, which can be used to perform action on the artifact
+     *
+     * @since 1.0.0
+     */
+    fun uploadArtifact(name: String, publishingType: String, file: File): String? {
+        val uploadFile = RequestBody.create(MediaType.get("application/octet-stream"), file)
+        val multipart = MultipartBody.Part.createFormData("bundle", file.name, uploadFile)
+        val uploadResponse = service.uploadRepository(name, publishingType, multipart).execute()
+
+        if (!uploadResponse.isSuccessful) {
+            throw NetworkCallException("Failed to upload artifact with name - $name")
+        }
+        return uploadResponse.body()
+    }
+
+    /**
+     * Return the [CentralPortalDeploymentStatus] for the given deployment id
+     * @since 1.0.0
+     */
+    fun getRepositoryStatus(id: String): CentralPortalDeploymentStatus? {
+        val response = service.getRepositoryStatus(id).execute()
+        if (!response.isSuccessful) {
+            throw NetworkCallException("Failed to get the status for $id")
+        }
+        return response.body()
+    }
+}

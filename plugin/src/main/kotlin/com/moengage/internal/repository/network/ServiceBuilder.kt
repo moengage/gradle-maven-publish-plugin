@@ -10,6 +10,12 @@ import java.util.concurrent.TimeUnit
 
 private const val timeout = 10L
 
+/**
+ * Manage the different network service classes
+ *
+ * @author Abhishek Kumar
+ * @since 1.0.0
+ */
 internal class ServiceBuilder(
     private val mavenCentralPortal: MavenCentralPortal,
     private val username: String,
@@ -31,15 +37,15 @@ internal class ServiceBuilder(
             .build()
     }
 
-    private val nexusService by lazy {
-        retrofit.create(NexusService::class.java)
-    }
+    /**
+     * Return the [NexusService] instance
+     * @since 1.0.0
+     */
+    fun getNexusService() = retrofit.create(NexusService::class.java)
 
-    private val centerPortalService by lazy {
-        retrofit.create(CentralPortalService::class.java)
-    }
-
-    fun getNexusService(): NexusService = nexusService
-
-    fun getCentralPortalService(): CentralPortalService = centerPortalService
+    /**
+     * Return the [CentralPortalService] instance
+     * @since 1.0.0
+     */
+    fun getCentralPortalService() = retrofit.create(CentralPortalService::class.java)
 }
