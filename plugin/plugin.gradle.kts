@@ -20,18 +20,22 @@ plugins {
     alias(moengageInternal.plugins.plugin.kotlin.serialization)
     `kotlin-dsl`
     `maven-publish`
+    signing
 }
 
 group = project.findProperty("GROUP") as String
 version = project.findProperty("VERSION_NAME") as String
 
 gradlePlugin {
+    website = "https://www.moengage.com"
+    vcsUrl = "https://github.com/moengage/gradle-maven-publish-plugin/"
     plugins {
         create("autoPublishToMavenCentral") {
             id = "com.moengage.plugin.maven.publish"
             implementationClass = "com.moengage.AutoPublishMavenPlugin"
             displayName = project.findProperty("NAME") as String
             description = project.findProperty("DESCRIPTION") as String
+            tags = listOf("MoEngage", "Release Plugin", "MavenCentral")
         }
     }
 }
@@ -53,4 +57,8 @@ dependencies {
     implementation((moengageInternal.kotlinSerialization))
     implementation(libs.retrofit)
     implementation(libs.retrofit.serialisation.converter)
+}
+
+signing {
+    sign(configurations.runtimeElements.get())
 }
