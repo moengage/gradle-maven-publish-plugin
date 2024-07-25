@@ -150,6 +150,10 @@ internal class MavenPublishManager(private val project: Project) {
      */
     fun closeAndReleaseRepository(stagedRepositoryIdProvider: Provider<String>) {
         log(message = "$tag closeAndReleaseArtifact(): Started")
+        if (isSnapshotBuild(releaseVersion)) {
+            log(message = "$tag closeAndReleaseRepository(): no need to close and release snapshot build")
+            return
+        }
         if (releasePortal == ArtifactReleasePortal.CENTRAL_PORTAL) {
             log(message = "$tag closeAndReleaseArtifact(): releasing on central portal")
             (repository as CentralPortalRepositoryHandler).closeAndRelease(
