@@ -1,6 +1,5 @@
 package com.moengage.internal.repository.network
 
-import com.moengage.internal.model.CentralPortalDeploymentStatus
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.Multipart
@@ -28,11 +27,4 @@ internal interface CentralPortalService {
         @Query("publishingType") publishingType: String?,
         @Part input: MultipartBody.Part
     ): Call<String>
-
-    /**
-     * Return the status for the artifact
-     * @since 1.0.0
-     */
-    @POST("publisher/status")
-    fun getRepositoryStatus(@Query("id") id: String): Call<CentralPortalDeploymentStatus>
 }

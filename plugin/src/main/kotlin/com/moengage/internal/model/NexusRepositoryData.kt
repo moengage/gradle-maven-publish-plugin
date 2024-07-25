@@ -41,39 +41,32 @@ internal data class NexusStagingRepositoryData(
 )
 
 /**
- * Info about the staged repositories
- * @since 1.0.0
- */
-@Serializable
-internal data class NexusStagingRepository(val data: List<NexusStagingRepositoryData>)
-
-/**
  * Request class for the creating staging repository
  * @since 1.0.0
  */
 @Serializable
-internal data class NexusArtifactCreateRequestData(val description: String)
+internal data class NexusRepositoryCreateRequestData(val description: String)
 
 /**
  * Data for the creating staging repository
  * @since 1.0.0
  */
 @Serializable
-internal data class NexusArtifactCreateRequest(val data: NexusArtifactCreateRequestData)
+internal data class NexusRepositoryCreateRequest(val data: NexusRepositoryCreateRequestData)
 
 /**
  * Response class while creating staging repository
  * @since 1.0.0
  */
 @Serializable
-internal data class NexusArtifactCreateResponseData(val stagedRepositoryId: String)
+internal data class NexusRepositoryCreateResponseData(val stagedRepositoryId: String)
 
 /**
  * Data response while creating staging repository
  * @since 1.0.0
  */
 @Serializable
-internal data class NexusArtifactCreateResponse(val data: NexusArtifactCreateResponseData)
+internal data class NexusRepositoryCreateResponse(val data: NexusRepositoryCreateResponseData)
 
 /**
  * Request for changing the state of staged repository

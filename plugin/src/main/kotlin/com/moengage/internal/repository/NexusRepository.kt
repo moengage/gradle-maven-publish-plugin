@@ -1,15 +1,15 @@
 package com.moengage.internal.repository
 
 import com.moengage.internal.exception.NetworkCallException
-import com.moengage.internal.model.NexusArtifactCreateRequest
-import com.moengage.internal.model.NexusArtifactCreateRequestData
 import com.moengage.internal.model.NexusPromoteRequest
 import com.moengage.internal.model.NexusPromoteRequestData
+import com.moengage.internal.model.NexusRepositoryCreateRequest
+import com.moengage.internal.model.NexusRepositoryCreateRequestData
 import com.moengage.internal.model.NexusStagingRepositoryData
 import com.moengage.internal.repository.network.NexusService
 
 /**
- * Repository class for [OSSPortal], uses [NexusService] for network calls
+ * Repository class for OSSPortal, uses [NexusService] for network calls
  *
  * @author Abhishek Kumar
  * @since 1.0.0
@@ -18,19 +18,6 @@ internal class NexusRepository(
     private val service: NexusService,
     private val profileId: String
 ) {
-
-    /**
-     * Return the list of staged repositories with the details
-     * @since 1.0.0
-     */
-    fun getStagedRepositories(): List<NexusStagingRepositoryData> {
-        val stagedRepositoriesResponse = service.getStagedRepositories(profileId).execute()
-        if (!stagedRepositoriesResponse.isSuccessful) {
-            throw NetworkCallException("Failed to get staged repositories.")
-        }
-        return stagedRepositoriesResponse.body()?.data ?: emptyList()
-    }
-
     /**
      * Create a new staged repository with the provided description.
      *
@@ -39,7 +26,7 @@ internal class NexusRepository(
      */
     fun createRepository(description: String): String? {
         val createRepositoryResponse =
-            service.createRepository(profileId, NexusArtifactCreateRequest(NexusArtifactCreateRequestData(description)))
+            service.createRepository(profileId, NexusRepositoryCreateRequest(NexusRepositoryCreateRequestData(description)))
                 .execute()
         if (!createRepositoryResponse.isSuccessful) {
             throw NetworkCallException("Failed to create staging repository with description - $description")
@@ -85,7 +72,7 @@ internal class NexusRepository(
 
     fun getRepositoryData(repositoryId: String): NexusStagingRepositoryData? {
         val response = service.getRepositoryDetails(repositoryId).execute()
-        if (response.isSuccessful) {
+        if (!response.isSuccessful) {
             println("::info::no open repository with id $repositoryId or some network error")
             return null
         }

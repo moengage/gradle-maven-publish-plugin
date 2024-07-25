@@ -19,7 +19,6 @@ plugins {
     alias(moengageInternal.plugins.plugin.kotlin.serialization)
     `kotlin-dsl`
     `maven-publish`
-    signing
 }
 
 group = project.findProperty("GROUP") as String

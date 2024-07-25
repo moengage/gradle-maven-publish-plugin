@@ -1,7 +1,6 @@
 package com.moengage.internal.repository
 
 import com.moengage.internal.exception.NetworkCallException
-import com.moengage.internal.model.CentralPortalDeploymentStatus
 import com.moengage.internal.repository.network.CentralPortalService
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -9,14 +8,12 @@ import okhttp3.RequestBody
 import java.io.File
 
 /**
- * Repository class for [CentralPortal], uses [CentralPortalService] for network calls
+ * Repository class for CentralPortal, uses [CentralPortalService] for network calls
  *
  * @author Abhishek Kumar
  * @since 1.0.0
  */
-internal class CentralPortalRepository(
-    private val service: CentralPortalService
-) {
+internal class CentralPortalRepository(private val service: CentralPortalService) {
 
     /**
      * Upload the artifact to the portal and release if [publishingType] equals automatically
@@ -37,17 +34,5 @@ internal class CentralPortalRepository(
             throw NetworkCallException("Failed to upload artifact with name - $name")
         }
         return uploadResponse.body()
-    }
-
-    /**
-     * Return the [CentralPortalDeploymentStatus] for the given deployment id
-     * @since 1.0.0
-     */
-    fun getRepositoryStatus(id: String): CentralPortalDeploymentStatus? {
-        val response = service.getRepositoryStatus(id).execute()
-        if (!response.isSuccessful) {
-            throw NetworkCallException("Failed to get the status for $id")
-        }
-        return response.body()
     }
 }

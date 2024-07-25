@@ -1,14 +1,14 @@
 package com.moengage.internal.repository.network
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import com.moengage.internal.model.MavenCentralPortal
+import com.moengage.internal.model.ArtifactReleasePortal
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import java.util.concurrent.TimeUnit
 
-private const val timeout = 10L
+private const val timeout = 60L
 
 /**
  * Manage the different network service classes
@@ -17,23 +17,24 @@ private const val timeout = 10L
  * @since 1.0.0
  */
 internal class ServiceBuilder(
-    private val mavenCentralPortal: MavenCentralPortal,
+    private val artifactReleasePortal: ArtifactReleasePortal,
     private val username: String,
     private val password: String
 ) {
 
     private val retrofit by lazy {
         val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor(AuthorizationInterceptor(mavenCentralPortal, username, password))
+            .addInterceptor(AuthorizationInterceptor(artifactReleasePortal, username, password))
             .connectTimeout(timeout, TimeUnit.SECONDS)
             .readTimeout(timeout, TimeUnit.SECONDS)
             .writeTimeout(timeout, TimeUnit.SECONDS)
             .build()
 
+        val json = Json { ignoreUnknownKeys = true }
         Retrofit.Builder()
-            .addConverterFactory(Json.asConverterFactory(MediaType.get("application/json")))
+            .addConverterFactory(json.asConverterFactory(MediaType.get("application/json")))
             .client(okHttpClient)
-            .baseUrl(mavenCentralPortal.host)
+            .baseUrl(artifactReleasePortal.baseHostUrl)
             .build()
     }
 

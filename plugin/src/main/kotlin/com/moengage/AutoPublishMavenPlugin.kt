@@ -12,6 +12,9 @@
  */
 package com.moengage
 
+import com.moengage.internal.AUTO_RELEASE_TASK_NAME
+import com.moengage.internal.MAVEN_PUBLISH_TASK_NAME
+import com.moengage.internal.MavenPublishManager
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -21,8 +24,40 @@ import org.gradle.api.Project
  * @author Abhishek Kumar
  * @since 1.0.0
  */
+@Suppress("unused")
 open class AutoPublishMavenPlugin : Plugin<Project> {
+
+    private lateinit var stagedRepositoryId: String
+
     override fun apply(project: Project) {
-        println("AutoPublishMavenPlugin applied")
+        project.applyRequiredPlugins()
+        val mavenPublishManager = MavenPublishManager(project)
+        val repositoryIdProvider = project.provider {
+            if (this::stagedRepositoryId.isInitialized) {
+                stagedRepositoryId
+            } else {
+                mavenPublishManager.getStagedRepositoryId().also {
+                    stagedRepositoryId = it
+                }
+            }
+        }
+
+        mavenPublishManager.configurePublish(repositoryIdProvider)
+        mavenPublishManager.configureSigning()
+
+        project.tasks.register(AUTO_RELEASE_TASK_NAME) {
+            description = "Auto publishes repository to MavenCentral"
+            group = "publishing"
+
+            dependsOn(project.tasks.named(MAVEN_PUBLISH_TASK_NAME))
+            doLast {
+                mavenPublishManager.closeAndReleaseRepository(repositoryIdProvider)
+            }
+        }
+    }
+
+    private fun Project.applyRequiredPlugins() {
+        plugins.apply("maven-publish")
+        plugins.apply("signing")
     }
 }

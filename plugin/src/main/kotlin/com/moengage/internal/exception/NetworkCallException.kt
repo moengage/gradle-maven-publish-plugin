@@ -6,6 +6,7 @@ package com.moengage.internal.exception
  * @author Abhishek Kumar
  * @since 1.0.0
  */
+@Suppress("unused")
 class NetworkCallException : Exception {
 
     /**

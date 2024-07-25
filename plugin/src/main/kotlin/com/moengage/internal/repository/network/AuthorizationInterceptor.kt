@@ -1,6 +1,6 @@
 package com.moengage.internal.repository.network
 
-import com.moengage.internal.model.MavenCentralPortal
+import com.moengage.internal.model.ArtifactReleasePortal
 import okhttp3.Credentials
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -8,7 +8,7 @@ import java.util.Base64
 
 private const val authorizationHeader = "Authorization"
 private const val userAgentHeader = "User-Agent"
-private const val acceptedEncodingHeader = "Accept-Encoding"
+private const val acceptedEncodingHeader = "Accept"
 private const val pluginAgentIdentifier = "moengage-release-plugin"
 
 /**
@@ -18,7 +18,7 @@ private const val pluginAgentIdentifier = "moengage-release-plugin"
  * @since 1.0.0
  */
 internal class AuthorizationInterceptor(
-    private val mavenCentralPortal: MavenCentralPortal,
+    private val artifactReleasePortal: ArtifactReleasePortal,
     private val username: String,
     private val password: String
 ) : Interceptor {
@@ -28,7 +28,7 @@ internal class AuthorizationInterceptor(
             chain.request().newBuilder().apply {
                 addHeader(acceptedEncodingHeader, "application/json")
                 addHeader(userAgentHeader, pluginAgentIdentifier)
-                if (mavenCentralPortal != MavenCentralPortal.CENTRAL_PORTAL) {
+                if (artifactReleasePortal != ArtifactReleasePortal.CENTRAL_PORTAL) {
                     addHeader(authorizationHeader, Credentials.basic(username, password))
                 } else {
                     val bearerToken =

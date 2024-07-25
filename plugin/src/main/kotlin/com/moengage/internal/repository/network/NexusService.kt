@@ -1,9 +1,8 @@
 package com.moengage.internal.repository.network
 
-import com.moengage.internal.model.NexusArtifactCreateRequest
-import com.moengage.internal.model.NexusArtifactCreateResponse
 import com.moengage.internal.model.NexusPromoteRequest
-import com.moengage.internal.model.NexusStagingRepository
+import com.moengage.internal.model.NexusRepositoryCreateRequest
+import com.moengage.internal.model.NexusRepositoryCreateResponse
 import com.moengage.internal.model.NexusStagingRepositoryData
 import retrofit2.Call
 import retrofit2.http.Body
@@ -20,29 +19,20 @@ import retrofit2.http.Path
 internal interface NexusService {
 
     /**
-     * Return the list of staged repositories with the details
+     * Create a new staged repository with the required details [NexusRepositoryCreateRequest]
      * @since 1.0.0
      */
-    @GET("staging/profile_repositories/{profileId}")
-    fun getStagedRepositories(
-        @Path("profileId") profileId: String
-    ): Call<NexusStagingRepository>
-
-    /**
-     * Create a new staged repository with the required details [NexusArtifactCreateRequest]
-     * @since 1.0.0
-     */
-    @POST("staging/profile_repositories/{profileId}/start")
+    @POST("staging/profiles/{profileId}/start")
     fun createRepository(
         @Path("profileId") profileId: String,
-        @Body createRequest: NexusArtifactCreateRequest
-    ): Call<NexusArtifactCreateResponse>
+        @Body createRequest: NexusRepositoryCreateRequest
+    ): Call<NexusRepositoryCreateResponse>
 
     /**
      * Close the open staged repository for the given repository id
      * @since 1.0.0
      */
-    @POST("staging/profile_repositories/{profileId}/finish")
+    @POST("staging/profiles/{profileId}/finish")
     fun closeRepository(
         @Path("profileId") profileId: String,
         @Body promoteRequest: NexusPromoteRequest
@@ -52,7 +42,7 @@ internal interface NexusService {
      * Move the staged repository to next state for the given repository id
      * @since 1.0.0
      */
-    @POST("staging/profile_repositories/{profileId}/promote")
+    @POST("staging/profiles/{profileId}/promote")
     fun promoteRepository(
         @Path("profileId") profileId: String,
         @Body promoteRequest: NexusPromoteRequest
@@ -62,14 +52,18 @@ internal interface NexusService {
      * Drop the staged repository for the given repository id
      * @since 1.0.0
      */
-    @POST("staging/profile_repositories/{profileId}/drop")
+    @POST("staging/profiles/{profileId}/drop")
     fun dropRepository(
         @Path("profileId") profileId: String,
         @Body promoteRequest: NexusPromoteRequest
     ): Call<Unit>
 
-    @GET("staging/repository/{repositoryId}")
+    /**
+     * Fetch the details about the given [repositoryIdKey]
+     * @since 1.0.0
+     */
+    @GET("staging/repository/{repositoryIdKey}")
     fun getRepositoryDetails(
-        @Path("repositoryId") repositoryId: String
+        @Path("repositoryIdKey") repositoryIdKey: String
     ): Call<NexusStagingRepositoryData>
 }
