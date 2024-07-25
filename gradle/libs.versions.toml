@@ -7,3 +7,4 @@ retrofit-serialisation-converter = { module = "com.jakewharton.retrofit:retrofit
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+gradle-publish-plugin = { id = "com.gradle.plugin-publish", version = "1.2.1"}

@@ -15,6 +15,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("java-gradle-plugin")
+    alias(libs.plugins.gradle.publish.plugin)
     alias(libs.plugins.kotlin.jvm)
     alias(moengageInternal.plugins.plugin.kotlin.serialization)
     `kotlin-dsl`
