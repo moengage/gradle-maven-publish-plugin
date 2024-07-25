@@ -1,11 +1,11 @@
 package com.moengage.internal.repository.network
 
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.moengage.internal.model.ArtifactReleasePortal
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import java.util.concurrent.TimeUnit
 
 private const val timeout = 60L
