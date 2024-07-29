@@ -1,18 +1,25 @@
 package com.moengage.internal.utils
 
+internal object LoggerConfiguration {
+
+    var configuredLogLevelValue = LogLevel.NOTICE.value
+}
+
 /**
  * Different supported log levels
  * @since 1.0.0
  */
-internal enum class LogLevel {
+internal enum class LogLevel(val value: Int) {
 
-    INFO,
+    NO_LOG(0),
 
-    NOTICE,
+    ERROR(1),
 
-    WARNING,
+    WARNING(2),
 
-    ERROR
+    NOTICE(3),
+
+    VERBOSE(4)
 }
 
 /**
@@ -21,13 +28,16 @@ internal enum class LogLevel {
  * @author Abhishek Kumar
  * @since 1.0.0
  */
-internal fun log(logLevel: LogLevel = LogLevel.INFO, message: String) {
+internal fun log(logLevel: LogLevel = LogLevel.VERBOSE, message: String) {
     val logTag = when (logLevel) {
-        LogLevel.INFO -> ""
+        LogLevel.VERBOSE -> "::verbose::"
         LogLevel.NOTICE -> "::notice::"
         LogLevel.WARNING -> "::warning::"
         LogLevel.ERROR -> "::error::"
+        LogLevel.NO_LOG -> ""
     }
 
-    println("${logTag}$message")
+    if (logLevel.value <= LoggerConfiguration.configuredLogLevelValue) {
+        println("${logTag}$message")
+    }
 }

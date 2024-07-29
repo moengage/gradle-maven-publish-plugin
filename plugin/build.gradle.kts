@@ -10,14 +10,12 @@
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("java-gradle-plugin")
-    alias(libs.plugins.gradle.publish.plugin)
+    alias(libs.plugins.plugin.gradle.publish)
     alias(libs.plugins.kotlin.jvm)
-    alias(moengageInternal.plugins.plugin.kotlin.serialization)
+    alias(libs.plugins.plugin.kotlin.serialization)
     `kotlin-dsl`
     `maven-publish`
     signing
@@ -40,21 +38,10 @@ gradlePlugin {
     }
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-}
-
-tasks.withType(KotlinCompile::class.java) {
-    compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_1_8)
-    }
-}
-
 dependencies {
     implementation(gradleApi())
-    implementation(moengageInternal.kotlinStdLib)
-    implementation((moengageInternal.kotlinSerialization))
+    implementation(libs.kotlin.stdlib)
+    implementation(libs.kotlin.serialization)
     implementation(libs.retrofit)
     implementation(libs.retrofit.serialisation.converter)
 }

@@ -12,9 +12,29 @@
  */
 package com.moengage
 
+import com.moengage.internal.ARTIFACT_NAME
 import com.moengage.internal.AUTO_RELEASE_TASK_NAME
+import com.moengage.internal.GROUP
+import com.moengage.internal.LOG_LEVEL
+import com.moengage.internal.MAVEN_CENTER_PASSWORD
+import com.moengage.internal.MAVEN_CENTER_USER_NAME
 import com.moengage.internal.MAVEN_PUBLISH_TASK_NAME
 import com.moengage.internal.MavenPublishManager
+import com.moengage.internal.OSS_MAVEN_CENTER_PASSWORD
+import com.moengage.internal.OSS_MAVEN_CENTER_USER_NAME
+import com.moengage.internal.PROFILE_ID
+import com.moengage.internal.RELEASE_HOST
+import com.moengage.internal.SIGNING_IN_MEMORY_KEY
+import com.moengage.internal.SIGNING_IN_MEMORY_KEY_ID
+import com.moengage.internal.SIGNING_IN_MEMORY_KEY_PASSWORD
+import com.moengage.internal.SIGNING_TYPE
+import com.moengage.internal.SO1_OSS_MAVEN_CENTER_PASSWORD
+import com.moengage.internal.SO1_OSS_MAVEN_CENTER_USER_NAME
+import com.moengage.internal.VERSION_NAME
+import com.moengage.internal.model.ArtifactReleasePortal
+import com.moengage.internal.utils.LogLevel
+import com.moengage.internal.utils.LoggerConfiguration.configuredLogLevelValue
+import com.moengage.internal.utils.log
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -30,7 +50,13 @@ open class AutoPublishMavenPlugin : Plugin<Project> {
     private lateinit var stagedRepositoryId: String
 
     override fun apply(project: Project) {
+        val logLevelProperties = project.findProperty(LOG_LEVEL) as? String?
+        if (logLevelProperties != null) {
+            configuredLogLevelValue = logLevelProperties.toInt()
+        }
+        project.validateReleaseSetup()
         project.applyRequiredPlugins()
+
         val mavenPublishManager = MavenPublishManager(project)
         val repositoryIdProvider = project.provider {
             if (this::stagedRepositoryId.isInitialized) {
@@ -53,6 +79,47 @@ open class AutoPublishMavenPlugin : Plugin<Project> {
             doLast {
                 mavenPublishManager.closeAndReleaseRepository(repositoryIdProvider)
             }
+        }
+    }
+
+    private fun Project.validateReleaseSetup() {
+        val propertiesNotIncluded = mutableListOf<String>()
+        if (!hasProperty(VERSION_NAME)) propertiesNotIncluded.add(VERSION_NAME)
+        if (!hasProperty(ARTIFACT_NAME)) propertiesNotIncluded.add(ARTIFACT_NAME)
+        if (!hasProperty(GROUP)) propertiesNotIncluded.add(GROUP)
+        if (!hasProperty(RELEASE_HOST)) propertiesNotIncluded.add(RELEASE_HOST)
+        if (!hasProperty(PROFILE_ID)) propertiesNotIncluded.add(PROFILE_ID)
+
+        when (ArtifactReleasePortal.getMavenCentralPortal(project.findProperty(RELEASE_HOST) as? String)) {
+            ArtifactReleasePortal.CENTRAL_PORTAL -> {
+                if (!hasProperty(MAVEN_CENTER_USER_NAME)) propertiesNotIncluded.add(MAVEN_CENTER_USER_NAME)
+                if (!hasProperty(MAVEN_CENTER_PASSWORD)) propertiesNotIncluded.add(MAVEN_CENTER_PASSWORD)
+            }
+
+            ArtifactReleasePortal.OSS_PORTAL -> {
+                if (!hasProperty(OSS_MAVEN_CENTER_USER_NAME)) propertiesNotIncluded.add(OSS_MAVEN_CENTER_USER_NAME)
+                if (!hasProperty(OSS_MAVEN_CENTER_PASSWORD)) propertiesNotIncluded.add(OSS_MAVEN_CENTER_PASSWORD)
+            }
+
+            ArtifactReleasePortal.S01_OSS_PORTAL -> {
+                if (!hasProperty(SO1_OSS_MAVEN_CENTER_USER_NAME)) {
+                    propertiesNotIncluded.add(
+                        SO1_OSS_MAVEN_CENTER_USER_NAME
+                    )
+                }
+                if (!hasProperty(SO1_OSS_MAVEN_CENTER_PASSWORD)) propertiesNotIncluded.add(SO1_OSS_MAVEN_CENTER_PASSWORD)
+            }
+        }
+
+        if (findProperty(SIGNING_TYPE) == true) {
+            if (!hasProperty(SIGNING_IN_MEMORY_KEY_ID)) propertiesNotIncluded.add(SIGNING_IN_MEMORY_KEY_ID)
+            if (!hasProperty(SIGNING_IN_MEMORY_KEY)) propertiesNotIncluded.add(SIGNING_IN_MEMORY_KEY)
+            if (!hasProperty(SIGNING_IN_MEMORY_KEY_PASSWORD)) propertiesNotIncluded.add(SIGNING_IN_MEMORY_KEY_PASSWORD)
+        }
+
+        if (propertiesNotIncluded.isNotEmpty()) {
+            log(LogLevel.ERROR, "Missing properties: $propertiesNotIncluded")
+            throw IllegalArgumentException("Required properties not found for the project release setup")
         }
     }
 

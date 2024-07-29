@@ -1,7 +1,10 @@
 package com.moengage.internal.repository
 
+import com.moengage.internal.BASE_TAG
 import com.moengage.internal.exception.NetworkCallException
 import com.moengage.internal.repository.network.CentralPortalService
+import com.moengage.internal.utils.LogLevel
+import com.moengage.internal.utils.log
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -14,6 +17,8 @@ import java.io.File
  * @since 1.0.0
  */
 internal class CentralPortalRepository(private val service: CentralPortalService) {
+
+    private val tag = "${BASE_TAG}_CentralPortalRepository"
 
     /**
      * Upload the artifact to the portal and release if [publishingType] equals automatically
@@ -31,6 +36,7 @@ internal class CentralPortalRepository(private val service: CentralPortalService
         val uploadResponse = service.uploadRepository(name, publishingType, multipart).execute()
 
         if (!uploadResponse.isSuccessful) {
+            log(LogLevel.ERROR, "$tag uploadArtifact(): ${uploadResponse.errorBody()}")
             throw NetworkCallException("Failed to upload artifact with name - $name")
         }
         return uploadResponse.body()

@@ -22,20 +22,7 @@ dependencyResolutionManagement {
     repositories {
         mavenCentral()
     }
-    versionCatalogs {
-        create("moengageInternal") {
-            from("com.moengage:android-dependency-catalog-internal:2.1.0")
-        }
-    }
 }
 
 include("plugin")
 rootProject.name = "gradle-maven-publish-plugin"
-
-nameBuildScriptsAfterProjectNames(rootProject.children)
-fun nameBuildScriptsAfterProjectNames(projects: Set<ProjectDescriptor>) {
-    for (project in projects) {
-        project.buildFileName = project.name + ".gradle.kts"
-        nameBuildScriptsAfterProjectNames(project.children)
-    }
-}

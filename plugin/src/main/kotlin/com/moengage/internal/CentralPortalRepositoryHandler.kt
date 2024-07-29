@@ -56,6 +56,7 @@ internal class CentralPortalRepositoryHandler(private val repository: CentralPor
             log(LogLevel.NOTICE, "$tag closeAndRelease(): stagedRepositoryId = $stagedRepositoryId release with publishId = $publishId")
             return publishId
         }
+        log(LogLevel.ERROR, "$tag closeAndRelease(): Failed to publish $deploymentName")
         throw IOException("Failed to publish $deploymentName")
     }
 }

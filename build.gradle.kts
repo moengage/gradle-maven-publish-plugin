@@ -13,9 +13,9 @@
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.kotlin.jvm) apply false
-    alias(moengageInternal.plugins.plugin.ktlint) apply false
-    alias(moengageInternal.plugins.plugin.kotlin.serialization) apply false
-    alias(libs.plugins.gradle.publish.plugin) apply false
+    alias(libs.plugins.plugin.ktlint) apply false
+    alias(libs.plugins.plugin.kotlin.serialization) apply false
+    alias(libs.plugins.plugin.gradle.publish) apply false
 }
 
 subprojects {

@@ -56,3 +56,6 @@ internal const val POM_DEVELOPER_EMAIL = "POM_DEVELOPER_EMAIL"
 internal const val POM_SCM_URL = "POM_SCM_URL"
 internal const val POM_SCM_CONNECTION = "POM_SCM_CONNECTION"
 internal const val POM_SCM_DEV_CONNECTION = "POM_SCM_DEV_CONNECTION"
+
+// Log Configuration
+internal const val LOG_LEVEL = "logLevel"
