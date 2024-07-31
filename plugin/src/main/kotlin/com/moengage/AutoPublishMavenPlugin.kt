@@ -20,8 +20,18 @@ import com.moengage.internal.MAVEN_CENTER_PASSWORD
 import com.moengage.internal.MAVEN_CENTER_USER_NAME
 import com.moengage.internal.MAVEN_PUBLISH_TASK_NAME
 import com.moengage.internal.MavenPublishManager
+import com.moengage.internal.NAME
 import com.moengage.internal.OSS_MAVEN_CENTER_PASSWORD
 import com.moengage.internal.OSS_MAVEN_CENTER_USER_NAME
+import com.moengage.internal.POM_DESCRIPTION
+import com.moengage.internal.POM_DEVELOPER_ID
+import com.moengage.internal.POM_DEVELOPER_NAME
+import com.moengage.internal.POM_LICENCE_NAME
+import com.moengage.internal.POM_LICENCE_URL
+import com.moengage.internal.POM_SCM_CONNECTION
+import com.moengage.internal.POM_SCM_DEV_CONNECTION
+import com.moengage.internal.POM_SCM_URL
+import com.moengage.internal.POM_URL
 import com.moengage.internal.PROFILE_ID
 import com.moengage.internal.RELEASE_HOST
 import com.moengage.internal.SIGNING_IN_MEMORY_KEY
@@ -89,6 +99,16 @@ open class AutoPublishMavenPlugin : Plugin<Project> {
         if (!hasProperty(GROUP)) propertiesNotIncluded.add(GROUP)
         if (!hasProperty(RELEASE_HOST)) propertiesNotIncluded.add(RELEASE_HOST)
         if (!hasProperty(PROFILE_ID)) propertiesNotIncluded.add(PROFILE_ID)
+        if (!hasProperty(NAME)) propertiesNotIncluded.add(NAME)
+        if (!hasProperty(POM_DESCRIPTION)) propertiesNotIncluded.add(POM_DESCRIPTION)
+        if (!hasProperty(POM_URL)) propertiesNotIncluded.add(POM_URL)
+        if (!hasProperty(POM_LICENCE_NAME)) propertiesNotIncluded.add(POM_LICENCE_NAME)
+        if (!hasProperty(POM_LICENCE_URL)) propertiesNotIncluded.add(POM_LICENCE_URL)
+        if (!hasProperty(POM_DEVELOPER_ID)) propertiesNotIncluded.add(POM_DEVELOPER_ID)
+        if (!hasProperty(POM_DEVELOPER_NAME)) propertiesNotIncluded.add(POM_DEVELOPER_NAME)
+        if (!hasProperty(POM_SCM_URL)) propertiesNotIncluded.add(POM_SCM_URL)
+        if (!hasProperty(POM_SCM_CONNECTION)) propertiesNotIncluded.add(POM_SCM_CONNECTION)
+        if (!hasProperty(POM_SCM_DEV_CONNECTION)) propertiesNotIncluded.add(POM_SCM_DEV_CONNECTION)
 
         when (ArtifactReleasePortal.getMavenCentralPortal(project.findProperty(RELEASE_HOST) as? String)) {
             ArtifactReleasePortal.CENTRAL_PORTAL -> {

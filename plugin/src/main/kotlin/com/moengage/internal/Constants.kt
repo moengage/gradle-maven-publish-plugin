@@ -4,7 +4,7 @@ package com.moengage.internal
 internal const val BASE_TAG = "GradleMavenPublishPlugin"
 
 // Task Name
-internal const val AUTO_RELEASE_TASK_NAME = "autoPublishToMaven"
+internal const val AUTO_RELEASE_TASK_NAME = "publishToMavenRepository"
 internal const val MAVEN_PUBLISH_TASK_NAME = "publish"
 
 // Identifiers

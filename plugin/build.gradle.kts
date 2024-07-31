@@ -28,7 +28,7 @@ gradlePlugin {
     website = "https://www.moengage.com"
     vcsUrl = "https://github.com/moengage/gradle-maven-publish-plugin/"
     plugins {
-        create("autoPublishToMavenCentral") {
+        create("publishToMavenRepositoryPlugin") {
             id = "com.moengage.plugin.maven.publish"
             implementationClass = "com.moengage.AutoPublishMavenPlugin"
             displayName = project.findProperty("NAME") as String

@@ -95,5 +95,5 @@ plugins {
 ## Publishing Library
 
 ```shell
-./gradlew autoPublishToMaven
+./gradlew publishToMavenRepository
 ```
