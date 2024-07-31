@@ -10,6 +10,7 @@ jobs:
   release:
     environment: publishing_gradle_config
     runs-on: ubuntu-latest
+    if: contains(fromJSON('["umangmoe", "arshiya-moengage"]'), github.actor)
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
