@@ -25,7 +25,7 @@ group = project.findProperty("GROUP") as String
 version = project.findProperty("VERSION_NAME") as String
 
 gradlePlugin {
-    website = "https://www.moengage.com"
+    website = "https://github.com/moengage/gradle-maven-publish-plugin/"
     vcsUrl = "https://github.com/moengage/gradle-maven-publish-plugin/"
     plugins {
         create("publishToMavenRepositoryPlugin") {
