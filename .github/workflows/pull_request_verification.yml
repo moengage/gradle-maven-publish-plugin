@@ -1,0 +1,33 @@
+name: Verify Pull Request
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [ "development", "master" ]
+      
+env:
+  publishKey: ${{ secrets.ORG_GRADLE_PROJECT_gradle.publish.key }}
+  secretKey: ${{ secrets.ORG_GRADLE_PROJECT_gradle.publish.secret }}
+  ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.ORG_GRADLE_PROJECT_signingInMemoryKey }}
+  ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.ORG_GRADLE_PROJECT_signingInMemoryKeyId }}
+  ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.ORG_GRADLE_PROJECT_signingInMemoryKeyPassword }}
+        
+jobs:
+  assemble-verification:
+    runs-on: ubuntu-latest
+    environment: publishing_gradle_config
+    if: ${{ !github.event.pull_request.draft }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 19
+      - name: Set up gradle cache
+        uses: gradle/gradle-build-action@v2
+      - name: Build project
+        run: ./gradlew assemble --info
+      - name: Lint check
+        run: ./gradlew ktlintcheck --info

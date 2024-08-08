@@ -1,0 +1,32 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    environment: publishing_gradle_config
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: 19
+      - name: Set up gradle cache
+        uses: gradle/gradle-build-action@v2
+      - name: Assemble project
+        run: ./gradlew assemble --info
+      - name: Release
+        env:
+          publishKey: ${{ secrets.ORG_GRADLE_PROJECT_gradle.publish.key }}
+          secretKey: ${{ secrets.ORG_GRADLE_PROJECT_gradle.publish.secret }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.ORG_GRADLE_PROJECT_signingInMemoryKey }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.ORG_GRADLE_PROJECT_signingInMemoryKeyId }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.ORG_GRADLE_PROJECT_signingInMemoryKeyPassword }}
+        run: ./gradlew publishPlugins -Pgradle.publish.key=$publishKey -Pgradle.publish.secret=$secretKey
