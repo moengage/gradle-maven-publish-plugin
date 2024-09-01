@@ -2,98 +2,146 @@
 
 # MoEngage Maven Publish Plugin
 
-Gradle plugin to manage the maven central repository upload and release automatically. Plugin can be used for publishing the Android, Kotlin or Java libraries.
+Gradle plugin to manage the publishing artifacts/libraries to [MavenCentral](https://mvnrepository.com/). The plugin
+supports publishing
+
+- Android Library
+- Kotlin Library
+- Java Library
+- Version Catalog.
+
+The plugin automatically closes the uploaded repositories when the publish command is executed, you need not login the
+to the web portal to publish the repository.
 
 ## Setup
 
-### Repository configuration
-Add the below required details in `gradle.properties`
-```text
+The following steps are required to publish an artifact to Maven Central.
+
+### Configure Library Meta data
+
+Add the below required details in `gradle.properties` of the project or module(in case of a multi-module project).
+
+```properties
+# version of your library, example 1.0, 1.1, 1.0.0, etc.
 VERSION_NAME=<Version of the library>
-ARTIFACT_NAME=<Library Artifact Id>
+# name space of the library, generally reverse of domain name, example com.moengage
 GROUP=<Library Group Id>
+# name of module or library
+ARTIFACT_NAME=<Library Artifact Id>
+# portal where you want to publish the library
 HOST=<OSS_PORTAL / S01_OSS_PORTAL / CENTRAL_PORTAL>
+# for a multi-variant library configure the variant to be released. Optional value, defaults to "release" if not configured.
+RELEASE_VARIANT=<Variant to be release>
 ```
 
-Add configuration details in `gradle.properties` (optional)
-```text
-RELEASE_VARIANT=<Variant to be release> (default is "release")
-```
+### POM file configuration
 
-### Credentials Setup
-- Add the username and password based on the host
-```text
-# For S01_OSS_PORTAL
-s01_oss_mavenCentralUsername
-s01_oss_mavenCentralPassword
+Add the pom file configuration in `gradle.properties` of the project or module(in case of a multi-module project).
 
-# For OSS_PORTAL
-oss_mavenCentralUsername
-oss_mavenCentralPassword
-
-# For CENTRAL_PORTAL
-mavenCentralUsername
-mavenCentralPassword
-```
-
-### Pom file configuration
-Add the pom file configuration in `gradle.properties`
-```text
+```properties
 NAME=<name>
 POM_DESCRIPTION=<description for the library>
 POM_URL=<pom url>
-
 POM_LICENCE_NAME=<license name>
 POM_LICENCE_URL=<license url>
-
 POM_DEVELOPER_ID=<developer id>
 POM_DEVELOPER_NAME=<developer name>
+# optionally set the email-id to contact the developer/author of the library.
 POM_DEVELOPER_EMAIL=<developer email>
-
 POM_SCM_URL=<scm url>
 POM_SCM_CONNECTION=<scm connection>
 POM_SCM_DEV_CONNECTION=<scm dev connection>
 ```
 
+### Publishing Credential Setup
+
+Based on the `HOST` used in the configuration of your Library meta-data add the publishing credentials to the
+environment or `gradle.properties` file. Here username password isn't the credentials used for logging into your
+account. The username password here would be the generated access token.
+
+```properties
+# For S01_OSS_PORTAL
+s01_oss_mavenCentralUsername=<username>
+s01_oss_mavenCentralPassword=<password>
+# For OSS_PORTAL
+oss_mavenCentralUsername=<username>
+oss_mavenCentralPassword=<password>
+# For CENTRAL_PORTAL
+mavenCentralUsername=<username>
+mavenCentralPassword=<password>
+```
+
+When publishing to OSSRH be it S01_OSS_PORTAL or OSS_PORTAL additionally configure the profile id in the environment
+variable or in the `gradle.properties` file. Refer to the OSSRH documentation to know more about profile id.
+
+```properties
+profileId=<profileId>
+```
+
 ### Singing Configuration
 
-#### In-Memory signing configuration (can be used in the workflow pipelines)
-- Enable in-memory signing, add the below property in `gradle.properties`
-```text
-IN_MEMORY_SIGNING=true (default value is false)
-```
+The artifacts to be uploaded can be signed with a signing key file or using a in-memory singing key file. The in-memory
+signing key is the preferred choice for Deployment pipelines like Github Actions, etc.
+The signing configuration can be added to the `gradle.properties` file of the project or Gradle home of the project or
+as an environment variable.
+By default, signing using a file is enabled.
 
-- Add key details in `gradle.properties`
-```text
-signingInMemoryKeyId=<key id>
-signingInMemoryKey=<key>
-signingInMemoryKeyPassword=<password>
-```
+#### Using file as signing configuration
 
-#### Using files as signing configuration (by default enabled)
-- Add key details in `gradle.properties`
-```text
+Add the below keys with corresponding values to the `gradle.properties` file or add them as the environment variable.
+
+```properties
 signing.keyId=<key id>
 signing.password=<password>
 signing.secretKeyRingFile=<signing key file path>
 ```
 
+#### In-Memory signing configuration
+
+Enable in-memory signing for the project or module by adding the below property in the `gradle.properties` of your
+project/module.
+
+```properties
+IN_MEMORY_SIGNING=true
+```
+
+Add the below keys with corresponding values to the `gradle.properties` file or add them as the environment variable.
+
+```properties
+signingInMemoryKeyId=<key id>
+signingInMemoryKey=<key>
+signingInMemoryKeyPassword=<password>
+```
+
+*Note: Do not push the credentials or singing key, password, ring file to version control.*
+
 ## Plugin Integration
-- Add the plugin in your project level build.gradle.kts
+
+- Add the plugin in your project level `build.gradle(.kts)`
+
 ```kotlin
 plugins {
-    id("com.moengage.plugin.maven.publish").version("<VERSION>").apply(false)
+    id("com.moengage.plugin.maven.publish").version("0.0.2").apply(false)
 }
 ```
-- Add the plugin in your module level build.gradle.kts
+
+- Add the plugin in your module level `build.gradle(.kts)`
+
 ```kotlin
 plugins {
-   id("com.moengage.plugin.maven.publish").version("<VERSION>")
+    id("com.moengage.plugin.maven.publish").version("0.0.2")
 }
 ```
 
 ## Publishing Library
 
+To publish/upload a library to Maven Central use the below command.
+
 ```shell
 ./gradlew publishToMavenRepository
 ```
+
+### Snapshot builds
+
+To publish snapshot builds append `-SNAPSHOT` to the version name and run the publishing command. The plugin will
+automatically publish a snapshot build.

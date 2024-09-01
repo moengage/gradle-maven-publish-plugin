@@ -98,7 +98,6 @@ open class AutoPublishMavenPlugin : Plugin<Project> {
         if (!hasProperty(ARTIFACT_NAME)) propertiesNotIncluded.add(ARTIFACT_NAME)
         if (!hasProperty(GROUP)) propertiesNotIncluded.add(GROUP)
         if (!hasProperty(RELEASE_HOST)) propertiesNotIncluded.add(RELEASE_HOST)
-        if (!hasProperty(PROFILE_ID)) propertiesNotIncluded.add(PROFILE_ID)
         if (!hasProperty(NAME)) propertiesNotIncluded.add(NAME)
         if (!hasProperty(POM_DESCRIPTION)) propertiesNotIncluded.add(POM_DESCRIPTION)
         if (!hasProperty(POM_URL)) propertiesNotIncluded.add(POM_URL)
@@ -109,8 +108,8 @@ open class AutoPublishMavenPlugin : Plugin<Project> {
         if (!hasProperty(POM_SCM_URL)) propertiesNotIncluded.add(POM_SCM_URL)
         if (!hasProperty(POM_SCM_CONNECTION)) propertiesNotIncluded.add(POM_SCM_CONNECTION)
         if (!hasProperty(POM_SCM_DEV_CONNECTION)) propertiesNotIncluded.add(POM_SCM_DEV_CONNECTION)
-
-        when (ArtifactReleasePortal.getMavenCentralPortal(project.findProperty(RELEASE_HOST) as? String)) {
+        val releasePortal = ArtifactReleasePortal.getMavenCentralPortal(project.findProperty(RELEASE_HOST) as? String)
+        when (releasePortal) {
             ArtifactReleasePortal.CENTRAL_PORTAL -> {
                 if (!hasProperty(MAVEN_CENTER_USER_NAME)) propertiesNotIncluded.add(MAVEN_CENTER_USER_NAME)
                 if (!hasProperty(MAVEN_CENTER_PASSWORD)) propertiesNotIncluded.add(MAVEN_CENTER_PASSWORD)
@@ -130,6 +129,10 @@ open class AutoPublishMavenPlugin : Plugin<Project> {
                 if (!hasProperty(SO1_OSS_MAVEN_CENTER_PASSWORD)) propertiesNotIncluded.add(SO1_OSS_MAVEN_CENTER_PASSWORD)
             }
         }
+        // profile id is not required for central portal publishing.
+        if (releasePortal == ArtifactReleasePortal.OSS_PORTAL || releasePortal == ArtifactReleasePortal.S01_OSS_PORTAL) {
+            if (!hasProperty(PROFILE_ID)) propertiesNotIncluded.add(PROFILE_ID)
+        }
 
         if (findProperty(SIGNING_TYPE) == true) {
             if (!hasProperty(SIGNING_IN_MEMORY_KEY_ID)) propertiesNotIncluded.add(SIGNING_IN_MEMORY_KEY_ID)
@@ -139,7 +142,7 @@ open class AutoPublishMavenPlugin : Plugin<Project> {
 
         if (propertiesNotIncluded.isNotEmpty()) {
             log(LogLevel.ERROR, "Missing properties: $propertiesNotIncluded")
-            throw IllegalArgumentException("Required properties not found for the project release setup")
+            throw IllegalArgumentException("Required properties $propertiesNotIncluded not found. Please configure the required properties for the plugin to work.")
         }
     }
 
