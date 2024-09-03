@@ -1,4 +1,5 @@
 # Next Release
 
-## 1.0.0
-- MOEN-31729: Support For Maven Release Plugin
+## 0.0.3
+- Bugfix
+  - Incorrect convertor added for central portal publishing
