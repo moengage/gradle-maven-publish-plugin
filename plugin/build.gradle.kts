@@ -43,7 +43,8 @@ dependencies {
     implementation(libs.kotlin.stdlib)
     implementation(libs.kotlin.serialization)
     implementation(libs.retrofit)
-    implementation(libs.retrofit.serialisation.converter)
+    implementation(libs.retrofit.converter.serialisation)
+    implementation(libs.retrofit.converter.scalar)
 }
 
 signing {

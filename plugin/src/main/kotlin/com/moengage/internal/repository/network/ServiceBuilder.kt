@@ -6,6 +6,7 @@ import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
 
 private const val timeout = 60L
@@ -31,11 +32,16 @@ internal class ServiceBuilder(
             .build()
 
         val json = Json { ignoreUnknownKeys = true }
-        Retrofit.Builder()
-            .addConverterFactory(json.asConverterFactory(MediaType.get("application/json")))
-            .client(okHttpClient)
-            .baseUrl(artifactReleasePortal.baseHostUrl)
-            .build()
+        val builder = Retrofit.Builder()
+        if (artifactReleasePortal == ArtifactReleasePortal.CENTRAL_PORTAL) {
+            builder.addConverterFactory(ScalarsConverterFactory.create())
+        } else {
+            builder.addConverterFactory(json.asConverterFactory(MediaType.get("application/json")))
+        }
+        builder.also {
+            it.client(okHttpClient)
+            it.baseUrl(artifactReleasePortal.baseHostUrl)
+        }.build()
     }
 
     /**
