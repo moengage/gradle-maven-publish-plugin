@@ -14,13 +14,13 @@ import retrofit2.http.Path
  * Interface containing all different network requests used by oss nexus portal
  *
  * @author Abhishek Kumar
- * @since 1.0.0
+ * @since 0.0.1
  */
 internal interface NexusService {
 
     /**
      * Create a new staged repository with the required details [NexusRepositoryCreateRequest]
-     * @since 1.0.0
+     * @since 0.0.1
      */
     @POST("staging/profiles/{profileId}/start")
     fun createRepository(
@@ -30,7 +30,7 @@ internal interface NexusService {
 
     /**
      * Close the open staged repository for the given repository id
-     * @since 1.0.0
+     * @since 0.0.1
      */
     @POST("staging/profiles/{profileId}/finish")
     fun closeRepository(
@@ -40,7 +40,7 @@ internal interface NexusService {
 
     /**
      * Move the staged repository to next state for the given repository id
-     * @since 1.0.0
+     * @since 0.0.1
      */
     @POST("staging/profiles/{profileId}/promote")
     fun promoteRepository(
@@ -50,7 +50,7 @@ internal interface NexusService {
 
     /**
      * Drop the staged repository for the given repository id
-     * @since 1.0.0
+     * @since 0.0.1
      */
     @POST("staging/profiles/{profileId}/drop")
     fun dropRepository(
@@ -60,7 +60,7 @@ internal interface NexusService {
 
     /**
      * Fetch the details about the given [repositoryIdKey]
-     * @since 1.0.0
+     * @since 0.0.1
      */
     @GET("staging/repository/{repositoryIdKey}")
     fun getRepositoryDetails(

@@ -145,3 +145,44 @@ To publish/upload a library to Maven Central use the below command.
 
 To publish snapshot builds append `-SNAPSHOT` to the version name and run the publishing command. The plugin will
 automatically publish a snapshot build.
+
+## Plugin Configuration
+
+### Logging
+
+By default, plugin print only the required information in the console which is `Level.NOTICE`. To configure the log
+level,
+add the below properties in your `gradle.properties` file or pass the property.
+
+```properties
+
+# NO_LOG(0)
+# ERROR(1)
+# WARNING(2)
+# NOTICE(3)
+# VERBOSE(4)
+LOG_LEVEL=<0/1/2/3/4>
+```
+
+To pass the property through command line instead of adding in `gradle.properties` file use the below command while
+executing publish command.
+
+```shell
+./gradlew publishToMavenRepository -PLOG_LEVEL=<0/1/2/3/4>
+```
+
+### Network
+
+To configure the timeout for the network call add the following property in `gradle.properties` file
+
+```properties
+NETWORK_TIMEOUT=<INT_VALUE (default 60)>
+```
+
+Sometime running the sonatype APIs can take time greater than the configured or default timeout duration which can
+terminate the network with an exception. You can configured the retries count for those timeout failure which will ensure
+publishing the repository is not often failing in peek hour for `OSS_PORTAL` and `S01_OSS_PORTAL`.
+
+```properties
+SONATYPE_MAX_RETRY=<INT_VALUE (default 0)>
+```

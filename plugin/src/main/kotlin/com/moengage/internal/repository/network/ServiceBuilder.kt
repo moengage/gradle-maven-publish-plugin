@@ -9,27 +9,30 @@ import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import java.util.concurrent.TimeUnit
 
-private const val timeout = 60L
+internal const val defaultTimeout = 60L // 1 minute
+internal const val maximumTimeOutDurationForNetworkCall = 300L // 5 minutes
+internal const val maximumRetryCountForNexusRepository = 5
 
 /**
  * Manage the different network service classes
  *
  * @author Abhishek Kumar
- * @since 1.0.0
+ * @since 0.0.1
  */
 internal class ServiceBuilder(
     private val artifactReleasePortal: ArtifactReleasePortal,
     private val username: String,
-    private val password: String
+    private val password: String,
+    private val networkTimeoutDuration: Long
 ) {
-
     private val retrofit by lazy {
-        val okHttpClient = OkHttpClient.Builder()
-            .addInterceptor(AuthorizationInterceptor(artifactReleasePortal, username, password))
-            .connectTimeout(timeout, TimeUnit.SECONDS)
-            .readTimeout(timeout, TimeUnit.SECONDS)
-            .writeTimeout(timeout, TimeUnit.SECONDS)
-            .build()
+        val okHttpClient = OkHttpClient.Builder().apply {
+            connectTimeout(networkTimeoutDuration, TimeUnit.SECONDS)
+            readTimeout(networkTimeoutDuration, TimeUnit.SECONDS)
+            writeTimeout(networkTimeoutDuration, TimeUnit.SECONDS)
+            addInterceptor(AuthorizationInterceptor(artifactReleasePortal, username, password))
+            addInterceptor(LoggingInterceptor())
+        }.build()
 
         val json = Json { ignoreUnknownKeys = true }
         val builder = Retrofit.Builder()
@@ -46,13 +49,13 @@ internal class ServiceBuilder(
 
     /**
      * Return the [NexusService] instance
-     * @since 1.0.0
+     * @since 0.0.1
      */
     fun getNexusService() = retrofit.create(NexusService::class.java)
 
     /**
      * Return the [CentralPortalService] instance
-     * @since 1.0.0
+     * @since 0.0.1
      */
     fun getCentralPortalService() = retrofit.create(CentralPortalService::class.java)
 }

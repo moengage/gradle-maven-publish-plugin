@@ -58,4 +58,8 @@ internal const val POM_SCM_CONNECTION = "POM_SCM_CONNECTION"
 internal const val POM_SCM_DEV_CONNECTION = "POM_SCM_DEV_CONNECTION"
 
 // Log Configuration
-internal const val LOG_LEVEL = "logLevel"
+internal const val LOG_LEVEL = "LOG_LEVEL"
+
+// Network configuration
+internal const val NETWORK_CALL_TIMEOUT_DURATION = "NETWORK_TIMEOUT"
+internal const val NEXUS_REPOSITORY_MAX_RETRY_ON_TIMEOUT = "SONATYPE_MAX_RETRY"

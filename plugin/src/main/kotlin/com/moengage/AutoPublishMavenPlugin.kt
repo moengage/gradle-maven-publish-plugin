@@ -52,7 +52,7 @@ import org.gradle.api.Project
  * Plugin for publishing the android libraries to the maven central portal with auto drop & release
  *
  * @author Abhishek Kumar
- * @since 1.0.0
+ * @since 0.0.1
  */
 @Suppress("unused")
 open class AutoPublishMavenPlugin : Plugin<Project> {

@@ -10,7 +10,7 @@ import com.moengage.internal.S01_OSS_PORTAL_STAGING_HOST
  * Different supported portal to upload the artifacts to maven center
  *
  * @author Abhishek Kumar
- * @since 1.0.0
+ * @since 0.0.1
  */
 internal enum class ArtifactReleasePortal(internal val baseHostUrl: String, internal val baseStagingHostUrl: String?) {
 
@@ -33,7 +33,7 @@ internal enum class ArtifactReleasePortal(internal val baseHostUrl: String, inte
 
         /**
          * Return the instance of [ArtifactReleasePortal] from the given host name
-         * @since 1.0.0
+         * @since 0.0.1
          */
         fun getMavenCentralPortal(host: String?): ArtifactReleasePortal {
             return when (host) {

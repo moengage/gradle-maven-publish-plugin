@@ -4,7 +4,7 @@ package com.moengage.internal.exception
  * Exception thrown when some network operation failed or the server responded with an error code
  *
  * @author Abhishek Kumar
- * @since 1.0.0
+ * @since 0.0.1
  */
 @Suppress("unused")
 class NetworkCallException : Exception {
