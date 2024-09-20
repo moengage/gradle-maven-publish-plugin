@@ -6,8 +6,8 @@ on:
     branches: [ "development", "master" ]
       
 env:
-  publishKey: ${{ secrets.ORG_GRADLE_PROJECT_gradle.publish.key }}
-  secretKey: ${{ secrets.ORG_GRADLE_PROJECT_gradle.publish.secret }}
+  publishKey: ${{ secrets.publishKey }}
+  secretKey: ${{ secrets.secretKey }}
   ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.ORG_GRADLE_PROJECT_signingInMemoryKey }}
   ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.ORG_GRADLE_PROJECT_signingInMemoryKeyId }}
   ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.ORG_GRADLE_PROJECT_signingInMemoryKeyPassword }}
