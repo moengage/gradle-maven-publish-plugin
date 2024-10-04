@@ -48,5 +48,10 @@ dependencies {
 }
 
 signing {
+    useInMemoryPgpKeys(
+        project.findProperty("signingInMemoryKeyId") as String,
+        project.findProperty("signingInMemoryKey") as String,
+        project.findProperty("signingInMemoryKeyPassword") as String
+    )
     sign(configurations.runtimeElements.get())
 }

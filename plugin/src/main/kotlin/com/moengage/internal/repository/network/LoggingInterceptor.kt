@@ -1,6 +1,7 @@
 package com.moengage.internal.repository.network
 
 import com.moengage.internal.BASE_TAG
+import com.moengage.internal.model.ArtifactReleasePortal
 import com.moengage.internal.utils.log
 import okhttp3.Interceptor
 import okhttp3.Request
@@ -13,7 +14,7 @@ import okio.Buffer
  * @author Abhishek Kumar
  * @since 0.1.0
  */
-internal class LoggingInterceptor : Interceptor {
+internal class LoggingInterceptor(private val releasePortal: ArtifactReleasePortal) : Interceptor {
 
     private val tag = "${BASE_TAG}_LoggingInterceptor"
 
@@ -22,7 +23,10 @@ internal class LoggingInterceptor : Interceptor {
         log(message = "$tag intercept(): Url - ${chain.request().url()}")
         log(message = "$tag intercept(): Method - ${chain.request().method()}")
         log(message = "$tag intercept(): Header - ${chain.request().headers()}")
-        log(message = "$tag intercept(): Body - ${getRequestBodyTextFromRequest(chain.request())}")
+        log(message = "$tag intercept(): Content Type - ${chain.request().body()?.contentType()}")
+        if (releasePortal != ArtifactReleasePortal.CENTRAL_PORTAL) {
+            log(message = "$tag intercept(): Body - ${getRequestBodyTextFromRequest(chain.request())}")
+        }
 
         val response = chain.proceed(chain.request())
 
