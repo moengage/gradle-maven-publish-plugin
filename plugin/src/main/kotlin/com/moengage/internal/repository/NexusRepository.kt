@@ -12,6 +12,8 @@ import com.moengage.internal.utils.LogLevel
 import com.moengage.internal.utils.log
 import java.net.SocketTimeoutException
 
+private const val FAILURE_CODE_NOT_FOUND = 404
+
 /**
  * Repository class for OSSPortal, uses [NexusService] for network calls
  *
@@ -124,6 +126,10 @@ internal class NexusRepository(
             if (!response.isSuccessful) {
                 val failureCode = response.code()
                 val failureMessage = response.message()
+                if (failureCode == FAILURE_CODE_NOT_FOUND) {
+                    log(message = "$tag getRepositoryData(): no open repository found for $repositoryId")
+                    return null
+                }
 
                 log(LogLevel.ERROR, "$tag getRepositoryData(): Failure Code: $failureCode, Failure Message: $failureMessage")
                 throw NetworkCallException("Failed to get data for $repositoryId due to response code: $failureCode and response message: $failureMessage")

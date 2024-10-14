@@ -6,6 +6,7 @@
 - Logging improvements
 - Bugfix
   - Incorrect convertor added for central portal publishing
+  - No error shown while the checks are failed in OSS portal during transitioning
 - Breaking Changes
   |                       Then                 |                       Now                                      |
   |:------------------------------------------:|:--------------------------------------------------------------:|
