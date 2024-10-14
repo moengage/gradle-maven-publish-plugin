@@ -6,8 +6,6 @@ import com.moengage.internal.MAVEN_CENTER_USER_NAME
 import com.moengage.internal.OSS_MAVEN_CENTER_PASSWORD
 import com.moengage.internal.OSS_MAVEN_CENTER_USER_NAME
 import com.moengage.internal.SNAPSHOT_IDENTIFIER
-import com.moengage.internal.SO1_OSS_MAVEN_CENTER_PASSWORD
-import com.moengage.internal.SO1_OSS_MAVEN_CENTER_USER_NAME
 import com.moengage.internal.model.ArtifactReleasePortal
 import org.gradle.api.Project
 import org.gradle.api.file.Directory
@@ -20,9 +18,8 @@ private const val tag = "${BASE_TAG}_Utils"
  */
 internal fun Project.getUserName(releasingPortal: ArtifactReleasePortal): String {
     return when (releasingPortal) {
-        ArtifactReleasePortal.S01_OSS_PORTAL -> findProperty(SO1_OSS_MAVEN_CENTER_USER_NAME) as String
-        ArtifactReleasePortal.OSS_PORTAL -> findProperty(OSS_MAVEN_CENTER_USER_NAME) as String
         ArtifactReleasePortal.CENTRAL_PORTAL -> findProperty(MAVEN_CENTER_USER_NAME) as String
+        else -> findProperty(OSS_MAVEN_CENTER_USER_NAME) as String
     }
 }
 
@@ -32,9 +29,8 @@ internal fun Project.getUserName(releasingPortal: ArtifactReleasePortal): String
  */
 internal fun Project.getUserPassword(releasingPortal: ArtifactReleasePortal): String {
     return when (releasingPortal) {
-        ArtifactReleasePortal.S01_OSS_PORTAL -> findProperty(SO1_OSS_MAVEN_CENTER_PASSWORD) as String
-        ArtifactReleasePortal.OSS_PORTAL -> findProperty(OSS_MAVEN_CENTER_PASSWORD) as String
         ArtifactReleasePortal.CENTRAL_PORTAL -> findProperty(MAVEN_CENTER_PASSWORD) as String
+        else -> findProperty(OSS_MAVEN_CENTER_PASSWORD) as String
     }
 }
 

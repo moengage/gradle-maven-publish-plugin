@@ -29,8 +29,6 @@ internal const val RELEASE_HOST = "HOST"
 
 // Credentials
 internal const val PROFILE_ID = "profileId"
-internal const val SO1_OSS_MAVEN_CENTER_USER_NAME = "s01_oss_mavenCentralUsername"
-internal const val SO1_OSS_MAVEN_CENTER_PASSWORD = "s01_oss_mavenCentralPassword"
 internal const val OSS_MAVEN_CENTER_USER_NAME = "oss_mavenCentralUsername"
 internal const val OSS_MAVEN_CENTER_PASSWORD = "oss_mavenCentralPassword"
 internal const val MAVEN_CENTER_USER_NAME = "mavenCentralUsername"

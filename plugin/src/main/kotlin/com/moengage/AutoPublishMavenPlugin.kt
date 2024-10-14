@@ -38,8 +38,6 @@ import com.moengage.internal.SIGNING_IN_MEMORY_KEY
 import com.moengage.internal.SIGNING_IN_MEMORY_KEY_ID
 import com.moengage.internal.SIGNING_IN_MEMORY_KEY_PASSWORD
 import com.moengage.internal.SIGNING_TYPE
-import com.moengage.internal.SO1_OSS_MAVEN_CENTER_PASSWORD
-import com.moengage.internal.SO1_OSS_MAVEN_CENTER_USER_NAME
 import com.moengage.internal.VERSION_NAME
 import com.moengage.internal.model.ArtifactReleasePortal
 import com.moengage.internal.utils.LogLevel
@@ -115,18 +113,9 @@ open class AutoPublishMavenPlugin : Plugin<Project> {
                 if (!hasProperty(MAVEN_CENTER_PASSWORD)) propertiesNotIncluded.add(MAVEN_CENTER_PASSWORD)
             }
 
-            ArtifactReleasePortal.OSS_PORTAL -> {
+            else -> {
                 if (!hasProperty(OSS_MAVEN_CENTER_USER_NAME)) propertiesNotIncluded.add(OSS_MAVEN_CENTER_USER_NAME)
                 if (!hasProperty(OSS_MAVEN_CENTER_PASSWORD)) propertiesNotIncluded.add(OSS_MAVEN_CENTER_PASSWORD)
-            }
-
-            ArtifactReleasePortal.S01_OSS_PORTAL -> {
-                if (!hasProperty(SO1_OSS_MAVEN_CENTER_USER_NAME)) {
-                    propertiesNotIncluded.add(
-                        SO1_OSS_MAVEN_CENTER_USER_NAME
-                    )
-                }
-                if (!hasProperty(SO1_OSS_MAVEN_CENTER_PASSWORD)) propertiesNotIncluded.add(SO1_OSS_MAVEN_CENTER_PASSWORD)
             }
         }
         // profile id is not required for central portal publishing.

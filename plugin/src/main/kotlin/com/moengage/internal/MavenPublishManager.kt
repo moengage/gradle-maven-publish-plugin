@@ -134,7 +134,6 @@ internal class MavenPublishManager(private val project: Project) {
     fun configureSigning() {
         log(message = "$tag configureSigning(): Started")
         val isInMemorySigningEnabled = (project.findProperty(SIGNING_TYPE) as? String ?: "false").toBoolean()
-        log(LogLevel.NOTICE, "$tag configureSigning(): isInMemorySigningEnabled = $isInMemorySigningEnabled")
         project.extensions.configure(SigningExtension::class.java) {
             if (isInMemorySigningEnabled) {
                 useInMemoryPgpKeys(
