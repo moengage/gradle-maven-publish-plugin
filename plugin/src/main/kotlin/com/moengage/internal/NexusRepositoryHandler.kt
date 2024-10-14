@@ -13,7 +13,7 @@ private const val transitionWaitTime = 1L * 60 * 1000 // 1 minute
  * Repository handler for the OSS Portal
  *
  * @author Abhishek Kumar
- * @since 1.0.0
+ * @since 0.0.1
  */
 internal class NexusRepositoryHandler(private val repository: NexusRepository) : Repository {
 
@@ -21,7 +21,7 @@ internal class NexusRepositoryHandler(private val repository: NexusRepository) :
 
     /**
      * Pre-release process for the repository. Should be called before the repository is staged
-     * @since 1.0.0
+     * @since 0.0.1
      */
     fun getStagedRepositoryId(groupName: String, artifactName: String, version: String): String {
         log(message = "$tag getStagedRepositoryId(): Started")
@@ -32,7 +32,7 @@ internal class NexusRepositoryHandler(private val repository: NexusRepository) :
 
     /**
      * Close and the release the staged repository
-     * @since 1.0.0
+     * @since 0.0.1
      */
     fun closeAndRelease(stagedRepositoryId: String) {
         log(message = "$tag closeAndRelease(): Started for $stagedRepositoryId")
@@ -52,7 +52,7 @@ internal class NexusRepositoryHandler(private val repository: NexusRepository) :
 
     /**
      * Return true if next state is possible else false
-     * @since 1.0.0
+     * @since 0.0.1
      */
     private fun moveToNextStepIfRequired(stagedRepositoryId: String): Boolean {
         log(message = "$tag moveToNextStepIfRequired(): ")

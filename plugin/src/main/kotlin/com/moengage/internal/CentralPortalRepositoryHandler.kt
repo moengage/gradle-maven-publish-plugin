@@ -19,7 +19,7 @@ private const val defaultReleasingType = "AUTOMATIC"
  * Repository handler for the Maven Central Portal
  *
  * @author Abhishek Kumar
- * @since 1.0.0
+ * @since 0.0.1
  */
 internal class CentralPortalRepositoryHandler(private val repository: CentralPortalRepository) : Repository {
 
@@ -27,7 +27,7 @@ internal class CentralPortalRepositoryHandler(private val repository: CentralPor
 
     /**
      * Close and release with [defaultReleasingType]
-     * @since 1.0.0
+     * @since 0.0.1
      */
     fun closeAndRelease(artifactId: String, artifactDirectory: Directory, stagedRepositoryId: String): String {
         log(message = "$tag closeAndRelease(): artifactId = $artifactId, artifactDirectory = $artifactDirectory, stagedRepositoryId = $stagedRepositoryId")

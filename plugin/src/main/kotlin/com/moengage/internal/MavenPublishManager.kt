@@ -5,6 +5,9 @@ import com.moengage.internal.repository.CentralPortalRepository
 import com.moengage.internal.repository.NexusRepository
 import com.moengage.internal.repository.Repository
 import com.moengage.internal.repository.network.ServiceBuilder
+import com.moengage.internal.repository.network.defaultTimeout
+import com.moengage.internal.repository.network.maximumRetryCountForNexusRepository
+import com.moengage.internal.repository.network.maximumTimeOutDurationForNetworkCall
 import com.moengage.internal.utils.LogLevel
 import com.moengage.internal.utils.getArtifactReleasePath
 import com.moengage.internal.utils.getUserName
@@ -18,6 +21,7 @@ import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.plugins.signing.SigningExtension
 import java.util.UUID
+import kotlin.math.min
 
 internal class MavenPublishManager(private val project: Project) {
 
@@ -47,21 +51,40 @@ internal class MavenPublishManager(private val project: Project) {
         releaseVariant = project.findProperty(RELEASE_VARIANT) as? String ?: DEFAULT_RELEASE_VARIANT
         releasePortal = ArtifactReleasePortal.getMavenCentralPortal(project.findProperty(RELEASE_HOST) as? String)
 
-        val serviceBuilder =
-            ServiceBuilder(releasePortal, project.getUserName(releasePortal), project.getUserPassword(releasePortal))
+        val maxRetryCountOnTimeOut = min(
+            (project.findProperty(NEXUS_REPOSITORY_MAX_RETRY_ON_TIMEOUT) as? String)?.toInt() ?: 0,
+            maximumRetryCountForNexusRepository
+        )
+        val networkTimeoutDuration = min(
+            (project.findProperty(NETWORK_CALL_TIMEOUT_DURATION) as? String)?.toLong() ?: defaultTimeout,
+            maximumTimeOutDurationForNetworkCall
+        )
+
+        val serviceBuilder = ServiceBuilder(
+            releasePortal,
+            project.getUserName(releasePortal),
+            project.getUserPassword(releasePortal),
+            networkTimeoutDuration
+        )
+
         repository = if (releasePortal == ArtifactReleasePortal.CENTRAL_PORTAL) {
             CentralPortalRepositoryHandler(CentralPortalRepository(serviceBuilder.getCentralPortalService()))
         } else {
             NexusRepositoryHandler(
-                NexusRepository(serviceBuilder.getNexusService(), project.findProperty(PROFILE_ID) as String)
+                NexusRepository(
+                    serviceBuilder.getNexusService(),
+                    project.findProperty(PROFILE_ID) as String,
+                    maxRetryCountOnTimeOut
+                )
             )
         }
+        log(message = "$tag initializeRequiredProperties(): Config { releaseVersion = $releaseVersion, releaseArtifactId = $releaseArtifactId, releaseGroupId = $releaseGroupId, releaseVariant = $releaseVariant, releasePortal = $releasePortal, maxRetryCountOnTimeOut = $maxRetryCountOnTimeOut, networkTimeoutDuration = $networkTimeoutDuration }")
         log(message = "$tag initializeRequiredProperties(): Completed")
     }
 
     /**
      * Configure the release
-     * @since 1.0.0
+     * @since 0.0.1
      */
     fun configurePublish(provider: Provider<String>) {
         log(message = "$tag configurePublish(): Started")
@@ -106,7 +129,7 @@ internal class MavenPublishManager(private val project: Project) {
 
     /**
      * Configure singing
-     * @since 1.0.0
+     * @since 0.0.1
      */
     fun configureSigning() {
         log(message = "$tag configureSigning(): Started")
@@ -127,7 +150,7 @@ internal class MavenPublishManager(private val project: Project) {
 
     /**
      * Return the id to be used for staging the repository
-     * @since 1.0.0
+     * @since 0.0.1
      */
     fun getStagedRepositoryId(): String {
         val stagedRepositoryId =
@@ -146,7 +169,7 @@ internal class MavenPublishManager(private val project: Project) {
 
     /**
      * Close and release the repository once it is staged
-     * @since 1.0.0
+     * @since 0.0.1
      */
     fun closeAndReleaseRepository(stagedRepositoryIdProvider: Provider<String>) {
         log(message = "$tag closeAndReleaseArtifact(): Started")

@@ -16,7 +16,7 @@ private const val tag = "${BASE_TAG}_Utils"
 
 /**
  * Return the username for the maven release portal based on the [releasingPortal]
- * @since 1.0.0
+ * @since 0.0.1
  */
 internal fun Project.getUserName(releasingPortal: ArtifactReleasePortal): String {
     return when (releasingPortal) {
@@ -28,7 +28,7 @@ internal fun Project.getUserName(releasingPortal: ArtifactReleasePortal): String
 
 /**
  * Return the user password for the maven release portal based on the [releasingPortal]
- * @since 1.0.0
+ * @since 0.0.1
  */
 internal fun Project.getUserPassword(releasingPortal: ArtifactReleasePortal): String {
     return when (releasingPortal) {
@@ -40,13 +40,13 @@ internal fun Project.getUserPassword(releasingPortal: ArtifactReleasePortal): St
 
 /**
  * Return true if the [releaseVersion] is the snapshot version
- * @since 1.0.0
+ * @since 0.0.1
  */
 internal fun isSnapshotBuild(releaseVersion: String) = releaseVersion.endsWith(SNAPSHOT_IDENTIFIER)
 
 /**
  * Return the artifact release path
- * @since 1.0.0
+ * @since 0.0.1
  */
 internal fun getArtifactReleasePath(
     isSnapshotRelease: Boolean,

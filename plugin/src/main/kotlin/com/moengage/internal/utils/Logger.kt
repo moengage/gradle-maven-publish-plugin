@@ -7,7 +7,7 @@ internal object LoggerConfiguration {
 
 /**
  * Different supported log levels
- * @since 1.0.0
+ * @since 0.0.1
  */
 internal enum class LogLevel(val value: Int) {
 
@@ -26,7 +26,7 @@ internal enum class LogLevel(val value: Int) {
  * Logger function to handle the logging message with appropriate level
  *
  * @author Abhishek Kumar
- * @since 1.0.0
+ * @since 0.0.1
  */
 internal fun log(logLevel: LogLevel = LogLevel.VERBOSE, message: String) {
     val logTag = when (logLevel) {

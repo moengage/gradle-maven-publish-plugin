@@ -14,7 +14,7 @@ import java.io.File
  * Repository class for CentralPortal, uses [CentralPortalService] for network calls
  *
  * @author Abhishek Kumar
- * @since 1.0.0
+ * @since 0.0.1
  */
 internal class CentralPortalRepository(private val service: CentralPortalService) {
 
@@ -28,7 +28,7 @@ internal class CentralPortalRepository(private val service: CentralPortalService
      * @param file artifact file to upload
      * @return the deployment id, which can be used to perform action on the artifact
      *
-     * @since 1.0.0
+     * @since 0.0.1
      */
     fun uploadArtifact(name: String, publishingType: String, file: File): String? {
         val uploadFile = RequestBody.create(MediaType.get("application/octet-stream"), file)
@@ -36,8 +36,11 @@ internal class CentralPortalRepository(private val service: CentralPortalService
         val uploadResponse = service.uploadRepository(name, publishingType, multipart).execute()
 
         if (!uploadResponse.isSuccessful) {
-            log(LogLevel.ERROR, "$tag uploadArtifact(): ${uploadResponse.errorBody()}")
-            throw NetworkCallException("Failed to upload artifact with name - $name")
+            val failureCode = uploadResponse.code()
+            val failureMessage = uploadResponse.message()
+
+            log(LogLevel.ERROR, "$tag uploadArtifact(): Failure Code: $failureCode, Failure Message: $failureMessage")
+            throw NetworkCallException("Failed to upload $name due to response code: $failureCode and response message: $failureMessage")
         }
         return uploadResponse.body()
     }

@@ -15,7 +15,7 @@ private const val pluginAgentIdentifier = "moengage-release-plugin"
  * OktHttps interceptor to add the required authorization header in the request
  *
  * @author Abhishek Kumar
- * @since 1.0.0
+ * @since 0.0.1
  */
 internal class AuthorizationInterceptor(
     private val artifactReleasePortal: ArtifactReleasePortal,

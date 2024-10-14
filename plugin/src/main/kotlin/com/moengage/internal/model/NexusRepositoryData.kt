@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 /**
  * Info about a specific staging repository
- * @since 1.0.0
+ * @since 0.0.1
  */
 @Serializable
 internal data class NexusStagingRepositoryData(
@@ -42,42 +42,42 @@ internal data class NexusStagingRepositoryData(
 
 /**
  * Request class for the creating staging repository
- * @since 1.0.0
+ * @since 0.0.1
  */
 @Serializable
 internal data class NexusRepositoryCreateRequestData(val description: String)
 
 /**
  * Data for the creating staging repository
- * @since 1.0.0
+ * @since 0.0.1
  */
 @Serializable
 internal data class NexusRepositoryCreateRequest(val data: NexusRepositoryCreateRequestData)
 
 /**
  * Response class while creating staging repository
- * @since 1.0.0
+ * @since 0.0.1
  */
 @Serializable
 internal data class NexusRepositoryCreateResponseData(val stagedRepositoryId: String)
 
 /**
  * Data response while creating staging repository
- * @since 1.0.0
+ * @since 0.0.1
  */
 @Serializable
 internal data class NexusRepositoryCreateResponse(val data: NexusRepositoryCreateResponseData)
 
 /**
  * Request for changing the state of staged repository
- * @since 1.0.0
+ * @since 0.0.1
  */
 @Serializable
 internal data class NexusPromoteRequest(val data: NexusPromoteRequestData)
 
 /**
  * Request data for changing the state of staged repository
- * @since 1.0.0
+ * @since 0.0.1
  */
 @Serializable
 internal data class NexusPromoteRequestData(val stagedRepositoryId: String)
