@@ -21,7 +21,7 @@ jobs:
       - name: Set up gradle cache
         uses: gradle/gradle-build-action@v2
       - name: Assemble project
-        run: ./gradlew assemble --info
+        run: ./gradlew assemble --stacktrace
       - name: Release
         env:
           publishKey: ${{ secrets.publishKey }}
@@ -29,4 +29,6 @@ jobs:
           ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.ORG_GRADLE_PROJECT_signingInMemoryKey }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.ORG_GRADLE_PROJECT_signingInMemoryKeyId }}
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.ORG_GRADLE_PROJECT_signingInMemoryKeyPassword }}
-        run: ./gradlew publishPlugins -Pgradle.publish.key=$publishKey -Pgradle.publish.secret=$secretKey
+        run: |
+          chmod +x ./.github/scripts/release.main.kts
+          kotlinc -script ./.github/scripts/release.main.kts $publishKey $secretKey
