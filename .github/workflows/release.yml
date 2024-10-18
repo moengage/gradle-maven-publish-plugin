@@ -20,8 +20,6 @@ jobs:
           java-version: 19
       - name: Set up gradle cache
         uses: gradle/gradle-build-action@v2
-      - name: Assemble project
-        run: ./gradlew assemble --stacktrace
       - name: Release
         env:
           publishKey: ${{ secrets.publishKey }}
