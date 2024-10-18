@@ -30,8 +30,8 @@ internal class ServiceBuilder(
             connectTimeout(networkTimeoutDuration, TimeUnit.SECONDS)
             readTimeout(networkTimeoutDuration, TimeUnit.SECONDS)
             writeTimeout(networkTimeoutDuration, TimeUnit.SECONDS)
-            addInterceptor(AuthorizationInterceptor(artifactReleasePortal, username, password))
             addInterceptor(LoggingInterceptor(artifactReleasePortal))
+            addInterceptor(AuthorizationInterceptor(artifactReleasePortal, username, password))
         }.build()
 
         val json = Json { ignoreUnknownKeys = true }

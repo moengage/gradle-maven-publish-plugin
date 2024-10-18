@@ -12,7 +12,7 @@ import okio.Buffer
  * Interceptor to print the network request
  *
  * @author Abhishek Kumar
- * @since 0.1.0
+ * @since 1.0.0
  */
 internal class LoggingInterceptor(private val releasePortal: ArtifactReleasePortal) : Interceptor {
 

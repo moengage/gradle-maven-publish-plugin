@@ -37,7 +37,12 @@ internal data class NexusStagingRepositoryData(
     /**
      * True if the repository is in transitioning from one state to another, false otherwise
      */
-    val transitioning: Boolean
+    val transitioning: Boolean,
+
+    /**
+     * Failure notification if checks are failing
+     */
+    val notifications: Int
 )
 
 /**

@@ -67,6 +67,12 @@ internal class NexusRepositoryHandler(private val repository: NexusRepository) :
             return moveToNextStepIfRequired(stagedRepositoryId)
         }
 
+        if (repositoryData.notifications > 0) {
+            log(LogLevel.ERROR, "$tag moveToNextStepIfRequired(): failure notification count = ${repositoryData.notifications} while transitioning")
+            log(LogLevel.NOTICE, "$tag moveToNextStepIfRequired(): Failure message available on OSS portal")
+            throw IOException("Failure while transitioning repository $stagedRepositoryId")
+        }
+
         val currentState = NexusArtifactTransitionState.valueOf(repositoryData.type.uppercase())
         log(message = "$tag moveToNextStepIfRequired(): current state = $currentState")
         return when (currentState) {

@@ -60,10 +60,7 @@ environment or `gradle.properties` file. Here username password isn't the creden
 account. The username password here would be the generated access token.
 
 ```properties
-# For S01_OSS_PORTAL
-s01_oss_mavenCentralUsername=<username>
-s01_oss_mavenCentralPassword=<password>
-# For OSS_PORTAL
+# For OSS_PORTAL & S01_OSS_PORTAL
 oss_mavenCentralUsername=<username>
 oss_mavenCentralPassword=<password>
 # For CENTRAL_PORTAL

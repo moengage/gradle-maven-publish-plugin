@@ -30,11 +30,8 @@ internal enum class LogLevel(val value: Int) {
  */
 internal fun log(logLevel: LogLevel = LogLevel.VERBOSE, message: String) {
     val logTag = when (logLevel) {
-        LogLevel.VERBOSE -> "::verbose::"
-        LogLevel.NOTICE -> "::notice::"
-        LogLevel.WARNING -> "::warning::"
         LogLevel.ERROR -> "::error::"
-        LogLevel.NO_LOG -> ""
+        else -> ""
     }
 
     if (logLevel.value <= LoggerConfiguration.configuredLogLevelValue) {
