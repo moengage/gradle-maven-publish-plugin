@@ -1,4 +1,4 @@
-# Next Release
+# 18-10-2024
 
 ## 1.0.0
 - Merging the credentials config flag for OSS Portal
