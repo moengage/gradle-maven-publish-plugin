@@ -8,6 +8,11 @@ jobs:
     environment: publishing_gradle_config
     runs-on: ubuntu-latest
     steps:
+      - name: Configure git
+        shell: bash
+        run: |
+          git config --global user.name "sdk-bot-user"
+          git config --global user.email "sdk.bot@moengage.com"
       - name: Checkout code
         uses: actions/checkout@v3
         with:
