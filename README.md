@@ -2,7 +2,7 @@
 
 # MoEngage Maven Publish Plugin
 
-Gradle plugin to manage the publishing artifacts/libraries to [MavenCentral](https://mvnrepository.com/). The plugin
+Gradle plugin to manage the publishing artifacts/libraries to [MavenCentral](https://central.sonatype.com/). The plugin
 supports publishing
 
 - Android Library
