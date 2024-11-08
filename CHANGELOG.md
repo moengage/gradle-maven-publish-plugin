@@ -1,3 +1,8 @@
+# Next Release Date
+
+## Next Release Version
+- Improve logging message for missing configuration.
+
 # 18-10-2024
 
 ## 1.0.0

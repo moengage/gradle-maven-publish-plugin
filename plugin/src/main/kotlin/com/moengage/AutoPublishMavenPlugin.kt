@@ -123,7 +123,8 @@ open class AutoPublishMavenPlugin : Plugin<Project> {
             if (!hasProperty(PROFILE_ID)) propertiesNotIncluded.add(PROFILE_ID)
         }
 
-        if (findProperty(SIGNING_TYPE) == true) {
+        val signingType = findProperty(SIGNING_TYPE)
+        if (signingType != null && signingType.toString().toBoolean()) {
             if (!hasProperty(SIGNING_IN_MEMORY_KEY_ID)) propertiesNotIncluded.add(SIGNING_IN_MEMORY_KEY_ID)
             if (!hasProperty(SIGNING_IN_MEMORY_KEY)) propertiesNotIncluded.add(SIGNING_IN_MEMORY_KEY)
             if (!hasProperty(SIGNING_IN_MEMORY_KEY_PASSWORD)) propertiesNotIncluded.add(SIGNING_IN_MEMORY_KEY_PASSWORD)
