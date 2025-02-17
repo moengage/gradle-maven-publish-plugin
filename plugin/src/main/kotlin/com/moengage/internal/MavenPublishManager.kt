@@ -92,7 +92,7 @@ internal class MavenPublishManager(private val project: Project) {
             publications {
                 repositories {
                     maven {
-                        if (releasePortal != ArtifactReleasePortal.CENTRAL_PORTAL) {
+                        if (releasePortal != ArtifactReleasePortal.CENTRAL_PORTAL || isSnapshotBuild(releaseVersion)) {
                             credentials {
                                 username = project.getUserName(releasePortal)
                                 password = project.getUserPassword(releasePortal)

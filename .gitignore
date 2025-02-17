@@ -2,6 +2,7 @@
 build/
 !gradle/wrapper/gradle-wrapper.jar
 **/build/
+local.properties
 
 ### IntelliJ IDEA ###
 .idea
