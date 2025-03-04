@@ -1,7 +1,8 @@
-# Next Release Date
+# Release Date
 
-## Next Release Version
+## Release Version
 - Improve logging message for missing configuration.
+- Support for snapshot builds in Central Portal.
 
 # 18-10-2024
 

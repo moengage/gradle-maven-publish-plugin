@@ -2,6 +2,15 @@ name: Release
 
 on:
   workflow_dispatch:
+    inputs:
+      releaseType:
+        type: string
+        description: 'Enter the Release type [major / minor / patch]'
+        required: true
+      releaseTicket:
+        type: string
+        description: 'Enter the Release ticket number'
+        required: true
 
 jobs:
   release:
@@ -34,4 +43,4 @@ jobs:
           ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.ORG_GRADLE_PROJECT_signingInMemoryKeyPassword }}
         run: |
           chmod +x ./.github/scripts/release.main.kts
-          kotlinc -script ./.github/scripts/release.main.kts $publishKey $secretKey
+          kotlinc -script ./.github/scripts/release.main.kts $publishKey $secretKey ${{ github.event.inputs.releaseType }} ${{ github.event.inputs.releaseTicket }}
