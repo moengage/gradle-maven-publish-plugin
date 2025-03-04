@@ -88,7 +88,7 @@ By default, signing using a file is enabled.
 Add the below keys with corresponding values to the `gradle.properties` file or add them as the environment variable.
 
 ```properties
-signing.keyId=<key id>
+ signing.keyId=<key id>
 signing.password=<password>
 signing.secretKeyRingFile=<signing key file path>
 ```
@@ -142,6 +142,28 @@ To publish/upload a library to Maven Central use the below command.
 
 To publish snapshot builds append `-SNAPSHOT` to the version name and run the publishing command. The plugin will
 automatically publish a snapshot build.
+
+#### Consuming Via Gradle
+- Maven Central Portal
+
+Checkout [documentation](https://central.sonatype.com/repository/maven-snapshots/me/abhishelf/sdk-logger/1.0.0-SNAPSHOT/maven-metadata.xml) for information about consuming snapshot
+
+- OSS Portal
+
+Configure build.gradle / setting.gradle
+```groovy
+repositories {
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
+}
+```
+
+```kts
+repositories { 
+    maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
+}
+```
 
 ## Plugin Configuration
 
