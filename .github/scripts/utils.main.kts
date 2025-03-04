@@ -69,3 +69,12 @@ fun writeUpdatedVersion(filePath: String, properties: Properties, key: String, v
     properties.setProperty(key, value)
     properties.store(FileOutputStream(filePath), "$value version update")
 }
+
+fun backMergeMasterToDevelopment() {
+    executeCommandOnShell("git checkout master")
+    executeCommandOnShell("git pull origin master")
+    executeCommandOnShell("git checkout development")
+    executeCommandOnShell("git pull origin development")
+    executeCommandOnShell("git merge master")
+    executeCommandOnShell("git push origin development")
+}

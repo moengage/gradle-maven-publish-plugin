@@ -34,3 +34,4 @@ if (executeCommandOnShell("./gradlew publishPlugins -Pgradle.publish.key=$publis
     exitProcess(1)
 }
 tagModuleWithLatestVersion(getVersionNameForModule("plugin"))
+backMergeMasterToDevelopment()
