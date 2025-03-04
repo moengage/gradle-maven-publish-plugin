@@ -1,6 +1,7 @@
 package com.moengage.internal.model
 
 import com.moengage.internal.CENTRAL_PORTAL_HOST
+import com.moengage.internal.CENTRAL_PORTAL_STAGING_HOST
 import com.moengage.internal.OSS_PORTAL_HOST
 import com.moengage.internal.OSS_PORTAL_STAGING_HOST
 import com.moengage.internal.S01_OSS_PORTAL_HOST
@@ -12,7 +13,7 @@ import com.moengage.internal.S01_OSS_PORTAL_STAGING_HOST
  * @author Abhishek Kumar
  * @since 0.0.1
  */
-internal enum class ArtifactReleasePortal(internal val baseHostUrl: String, internal val baseStagingHostUrl: String?) {
+internal enum class ArtifactReleasePortal(internal val baseHostUrl: String, internal val baseStagingHostUrl: String) {
 
     /**
      * oss portal with host [OSS_PORTAL_HOST]
@@ -27,7 +28,7 @@ internal enum class ArtifactReleasePortal(internal val baseHostUrl: String, inte
     /**
      * new maven central portal with host [CENTRAL_PORTAL_HOST]
      */
-    CENTRAL_PORTAL(CENTRAL_PORTAL_HOST, null);
+    CENTRAL_PORTAL(CENTRAL_PORTAL_HOST, CENTRAL_PORTAL_STAGING_HOST);
 
     companion object {
 

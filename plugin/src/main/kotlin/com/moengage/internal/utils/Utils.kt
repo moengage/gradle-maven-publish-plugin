@@ -53,7 +53,7 @@ internal fun getArtifactReleasePath(
     val releasingHostUri = when (releasingPortal) {
         ArtifactReleasePortal.CENTRAL_PORTAL -> {
             if (isSnapshotRelease) {
-                throw IllegalArgumentException("Snapshot is not supported with Maven Central Portal.")
+                releasingPortal.baseStagingHostUrl
             } else {
                 "file://$buildDirectory/publish/staging/$stagedArtifactId"
             }
@@ -61,7 +61,7 @@ internal fun getArtifactReleasePath(
 
         ArtifactReleasePortal.OSS_PORTAL -> {
             if (isSnapshotRelease) {
-                releasingPortal.baseStagingHostUrl!!
+                releasingPortal.baseStagingHostUrl
             } else {
                 "${releasingPortal.baseHostUrl}staging/deployByRepositoryId/$stagedArtifactId/"
             }
@@ -69,7 +69,7 @@ internal fun getArtifactReleasePath(
 
         ArtifactReleasePortal.S01_OSS_PORTAL -> {
             if (isSnapshotRelease) {
-                releasingPortal.baseStagingHostUrl!!
+                releasingPortal.baseStagingHostUrl
             } else {
                 "${releasingPortal.baseHostUrl}staging/deployByRepositoryId/$stagedArtifactId/"
             }

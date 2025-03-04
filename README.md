@@ -138,10 +138,37 @@ To publish/upload a library to Maven Central use the below command.
 ./gradlew publishToMavenRepository
 ```
 
-### Snapshot builds
+## Snapshot builds
 
 To publish snapshot builds append `-SNAPSHOT` to the version name and run the publishing command. The plugin will
 automatically publish a snapshot build.
+
+### Integrating Snapshot Builds.
+#### Maven Central Portal
+
+Checkout [documentation](https://central.sonatype.com/repository/maven-snapshots/me/abhishelf/sdk-logger/1.0.0-SNAPSHOT/maven-metadata.xml) for information about consuming snapshot buids.
+
+#### OSS Portal
+
+Configure build.gradle / setting.gradle
+
+**Groovy**
+
+```groovy
+repositories {
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
+}
+```
+
+**Kotlin**
+
+```kts
+repositories { 
+    maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
+}
+```
 
 ## Plugin Configuration
 

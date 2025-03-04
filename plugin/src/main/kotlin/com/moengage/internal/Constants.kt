@@ -18,6 +18,7 @@ internal const val S01_OSS_PORTAL_HOST = "https://s01.oss.sonatype.org/service/l
 internal const val S01_OSS_PORTAL_STAGING_HOST = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
 
 internal const val CENTRAL_PORTAL_HOST = "https://central.sonatype.com/api/v1/"
+internal const val CENTRAL_PORTAL_STAGING_HOST = "https://central.sonatype.com/repository/maven-snapshots/"
 
 // Default values
 internal const val DEFAULT_RELEASE_VARIANT = "release"
