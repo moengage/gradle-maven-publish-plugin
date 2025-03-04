@@ -1,6 +1,6 @@
-# Release Date
+# 4-3-2025
 
-## Release Version
+## 1.1.0
 - Improve logging message for missing configuration.
 - Support for snapshot builds in Central Portal.
 
