@@ -146,7 +146,7 @@ automatically publish a snapshot build.
 ### Integrating Snapshot Builds.
 #### Maven Central Portal
 
-Checkout [documentation](https://central.sonatype.com/repository/maven-snapshots/me/abhishelf/sdk-logger/1.0.0-SNAPSHOT/maven-metadata.xml) for information about consuming snapshot buids.
+Checkout [documentation](https://central.sonatype.org/publish/publish-portal-snapshots/#consuming-via-gradle) for information about consuming snapshot buids.
 
 #### OSS Portal
 
