@@ -8,7 +8,8 @@ supports publishing
 - Android Library
 - Kotlin Library
 - Java Library
-- Version Catalog.
+- Version Catalog
+- BOM (Bill of Materials)
 
 The plugin automatically closes the uploaded repositories when the publish command is executed, you need not login the
 to the web portal to publish the repository.
@@ -169,6 +170,45 @@ repositories {
     maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
 }
 ```
+
+## Publishing a BOM
+
+To release a BOM (Bill of Materials), you need to configure the following property in your `gradle.properties` file:
+
+```properties
+RELEASE_VARIANT=javaPlatform
+```
+
+You can configure `constraints` in `dependencies` block of your `build.gradle` file as shown below (make sure you have `java-platform` plugin added in your build gradle file)
+```kotlin
+dependencies {
+   constraints {
+        api("<DEPENDENCY_WHICH_NEEDS_TO_BE_INCLUDED_IN_BOM>")
+       // list all dependencies which needs to be part of BOM
+   }
+}
+```
+
+This will ensure that the plugin generates and publishes a BOM instead of a standard library. 
+
+## Publishing a Version Catalog
+
+To release a catalog, you need to configure the following property in your `gradle.properties` file:
+
+```properties
+RELEASE_VARIANT=versionCatalog
+```
+
+After applying this property, you can configure `versionCatalog` in `catalog` block of your `build.gradle` file as shown below (make sure you have `version-catlog` plugin added in your build gradle file)
+```kotlin
+catalog {
+    versionCatalog {
+        library("<NAME>>", "<GROUP>", "<ARTIFACT>").version("<VERSION>")
+    }
+}
+```
+
+This will ensure that the plugin generates and publishes a catalog.
 
 ## Plugin Configuration
 
