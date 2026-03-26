@@ -45,6 +45,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.serialisation)
     implementation(libs.retrofit.converter.scalar)
+    compileOnly(libs.kotlin.gradle.plugin)
 }
 
 signing {

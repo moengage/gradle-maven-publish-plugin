@@ -56,6 +56,9 @@ internal const val POM_SCM_URL = "POM_SCM_URL"
 internal const val POM_SCM_CONNECTION = "POM_SCM_CONNECTION"
 internal const val POM_SCM_DEV_CONNECTION = "POM_SCM_DEV_CONNECTION"
 
+// Plugin ID
+internal const val KOTLIN_MULTIPLATFORM_PLUGIN_ID = "org.jetbrains.kotlin.multiplatform"
+
 // Log Configuration
 internal const val LOG_LEVEL = "LOG_LEVEL"
 
