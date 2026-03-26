@@ -47,7 +47,11 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 
 /**
- * Plugin for publishing the android libraries to the maven central portal with auto drop & release
+ * Plugin for publishing the android libraries to the maven central portal with auto drop & release.
+ * For KMP projects, the plugin auto-detects the `kotlin-multiplatform` Gradle plugin and configures
+ * POM metadata and signing across all KMP-generated publications (`kotlinMultiplatform`, `jvm`,
+ * `android`, `iosArm64`, etc.) without any extra configuration.
+ *
  *
  * @author Abhishek Kumar
  * @since 0.0.1

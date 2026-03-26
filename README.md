@@ -10,6 +10,7 @@ supports publishing
 - Java Library
 - Version Catalog
 - BOM (Bill of Materials)
+- KMP Library
 
 The plugin automatically closes the uploaded repositories when the publish command is executed, you need not login the
 to the web portal to publish the repository.
@@ -110,6 +111,21 @@ signingInMemoryKeyId=<key id>
 signingInMemoryKey=<key>
 signingInMemoryKeyPassword=<password>
 ```
+
+## Kotlin Multiplatform (KMP) Support
+
+The plugin automatically detects KMP projects and configures all KMP-generated publications
+(`kotlinMultiplatform`, `jvm`, `android`, `iosArm64`, etc.) with POM metadata and signing — no
+extra configuration required.
+
+### How it works
+
+- KMP is detected via the presence of the `org.jetbrains.kotlin.multiplatform` plugin.
+- The plugin **safely overrides** the `artifactId` for KMP publications based on your `ARTIFACT_NAME`.
+  It dynamically replaces the default `{project.name}-{target}` prefix with `{ARTIFACT_NAME}-{target}`, which decouples
+  the published artifact ID from the local module configuration while preserving Gradle Module Metadata resolution.
+- `RELEASE_VARIANT` is used for the KMP `Android` target to determine which build variant is published
+  (defaults to `release` if not explicitly specified).
 
 *Note: Do not push the credentials or singing key, password, ring file to version control.*
 

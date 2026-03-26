@@ -20,6 +20,10 @@ import org.gradle.api.provider.Provider
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.plugins.signing.SigningExtension
+import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinAndroidTarget
+import org.jetbrains.kotlin.gradle.plugin.KotlinTarget
+import org.gradle.api.Action
 import java.util.UUID
 import kotlin.math.min
 
@@ -34,6 +38,7 @@ internal class MavenPublishManager(private val project: Project) {
     private lateinit var releaseVariant: String
     private lateinit var releasePortal: ArtifactReleasePortal
     private lateinit var repository: Repository
+    private var isKmpProject: Boolean = false
 
     init {
         initializeRequiredProperties()
@@ -78,6 +83,11 @@ internal class MavenPublishManager(private val project: Project) {
                 )
             )
         }
+
+        // Set group and version early so the KMP plugin can generate the correct Gradle Module Metadata routing table
+        project.group = releaseGroupId
+        project.version = releaseVersion
+
         log(message = "$tag initializeRequiredProperties(): Config { releaseVersion = $releaseVersion, releaseArtifactId = $releaseArtifactId, releaseGroupId = $releaseGroupId, releaseVariant = $releaseVariant, releasePortal = $releasePortal, maxRetryCountOnTimeOut = $maxRetryCountOnTimeOut, networkTimeoutDuration = $networkTimeoutDuration }")
         log(message = "$tag initializeRequiredProperties(): Completed")
     }
@@ -88,47 +98,91 @@ internal class MavenPublishManager(private val project: Project) {
      */
     fun configurePublish(provider: Provider<String>) {
         log(message = "$tag configurePublish(): Started")
+        isKmpProject = project.plugins.hasPlugin(KOTLIN_MULTIPLATFORM_PLUGIN_ID)
+        log(message = "$tag configurePublish(): isKmpProject = $isKmpProject")
+
+        if (isKmpProject) {
+            project.pluginManager.withPlugin(KOTLIN_MULTIPLATFORM_PLUGIN_ID) {
+                project.extensions.configure(KotlinMultiplatformExtension::class.java, object : Action<KotlinMultiplatformExtension> {
+                    override fun execute(ext: KotlinMultiplatformExtension) {
+                        ext.targets.configureEach(object : Action<KotlinTarget> {
+                            override fun execute(target: KotlinTarget) {
+                                if (target is KotlinAndroidTarget) {
+                                    if (target.publishLibraryVariants.isNullOrEmpty()) {
+                                        target.publishLibraryVariants = listOf(releaseVariant)
+                                    }
+                                }
+                            }
+                        })
+                    }
+                })
+            }
+        }
+
         project.extensions.configure(PublishingExtension::class.java) {
-            publications {
-                repositories {
-                    maven {
-                        if (releasePortal != ArtifactReleasePortal.CENTRAL_PORTAL || isSnapshotBuild(releaseVersion)) {
-                            credentials {
-                                username = project.getUserName(releasePortal)
-                                password = project.getUserPassword(releasePortal)
-                            }
+            repositories {
+                maven {
+                    if (releasePortal != ArtifactReleasePortal.CENTRAL_PORTAL || isSnapshotBuild(releaseVersion)) {
+                        credentials {
+                            username = project.getUserName(releasePortal)
+                            password = project.getUserPassword(releasePortal)
                         }
-
-                        setUrl(
-                            provider.map {
-                                getArtifactReleasePath(
-                                    isSnapshotBuild(releaseVersion),
-                                    it,
-                                    buildDirectory,
-                                    releasePortal
-                                )
-                            }
-                        )
                     }
+
+                    setUrl(
+                        provider.map {
+                            getArtifactReleasePath(
+                                isSnapshotBuild(releaseVersion),
+                                it,
+                                buildDirectory,
+                                releasePortal
+                            )
+                        }
+                    )
                 }
+            }
 
-                register(releaseVariant, MavenPublication::class.java) {
-                    project.afterEvaluate {
-                        from(project.components.getByName(releaseVariant))
+            if (isKmpProject) {
+                // KMP plugin auto-registers publications. We are overriding artifactId using project.afterEvaluate to prevent KMP from resetting it.
+                publications.withType(MavenPublication::class.java).configureEach {
+                    val publication = this
+                    publication.groupId = releaseGroupId
+                    publication.version = releaseVersion
+                    publication.configurePom()
+                    
+                    project.afterEvaluate(object : Action<Project> {
+                        override fun execute(p: Project) {
+                            val projectName = p.name
+                            if (publication.artifactId == projectName) {
+                                publication.artifactId = releaseArtifactId
+                            } else if (publication.artifactId.startsWith("$projectName-")) {
+                                publication.artifactId = publication.artifactId.replaceFirst("$projectName-", "$releaseArtifactId-")
+                            }
+                            log(message = "$tag configurePublish(): KMP publication configured: name=${publication.name}, artifactId=${publication.artifactId}")
+                        }
+                    })
+                }
+            } else {
+                publications {
+                    register(releaseVariant, MavenPublication::class.java) {
+                        project.afterEvaluate {
+                            from(project.components.getByName(releaseVariant))
+                        }
+                        groupId = releaseGroupId
+                        artifactId = releaseArtifactId
+                        version = releaseVersion
+
+                        configurePom()
                     }
-                    groupId = releaseGroupId
-                    artifactId = releaseArtifactId
-                    version = releaseVersion
-
-                    configurePom()
                 }
             }
         }
+
         log(message = "$tag configurePublish(): Completed")
     }
 
     /**
-     * Configure singing
+     * Configure signing
      * @since 0.0.1
      */
     fun configureSigning() {
@@ -142,7 +196,12 @@ internal class MavenPublishManager(private val project: Project) {
                     project.findProperty(SIGNING_IN_MEMORY_KEY_PASSWORD) as String
                 )
             }
-            sign(project.extensions.getByType(PublishingExtension::class.java).publications.getByName(releaseVariant))
+            val publications = project.extensions.getByType(PublishingExtension::class.java).publications
+            if (isKmpProject) {
+                sign(publications)
+            } else {
+                sign(publications.getByName(releaseVariant))
+            }
         }
         log(message = "$tag configureSigning(): Completed")
     }

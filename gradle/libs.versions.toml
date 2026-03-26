@@ -8,6 +8,7 @@ retrofit-converter-serialisation = { module = "com.squareup.retrofit2:converter-
 retrofit-converter-scalar = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "retrofit" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.7.1" }
+kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
