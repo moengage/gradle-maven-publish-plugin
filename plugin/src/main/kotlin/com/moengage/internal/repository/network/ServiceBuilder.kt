@@ -2,7 +2,7 @@ package com.moengage.internal.repository.network
 
 import com.moengage.internal.model.ArtifactReleasePortal
 import kotlinx.serialization.json.Json
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -39,7 +39,7 @@ internal class ServiceBuilder(
         if (artifactReleasePortal == ArtifactReleasePortal.CENTRAL_PORTAL) {
             builder.addConverterFactory(ScalarsConverterFactory.create())
         } else {
-            builder.addConverterFactory(json.asConverterFactory(MediaType.get("application/json")))
+            builder.addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
         }
         builder.also {
             it.client(okHttpClient)

@@ -1,16 +1,16 @@
 [versions]
-kotlin = "2.0.0"
-retrofit = "2.11.0"
+kotlin = "2.3.20"
+retrofit = "3.0.0"
 
 [libraries]
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit-converter-serialisation = { module = "com.squareup.retrofit2:converter-kotlinx-serialization", version.ref = "retrofit" }
 retrofit-converter-scalar = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "retrofit" }
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
-kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.7.1" }
+kotlin-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version = "1.11.0" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 plugin-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
-plugin-gradle-publish = { id = "com.gradle.plugin-publish", version = "1.2.1" }
+plugin-gradle-publish = { id = "com.gradle.plugin-publish", version = "2.1.1" }
 plugin-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version = "11.6.0" }

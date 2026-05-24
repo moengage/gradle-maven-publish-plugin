@@ -5,9 +5,9 @@ import com.moengage.internal.exception.NetworkCallException
 import com.moengage.internal.repository.network.CentralPortalService
 import com.moengage.internal.utils.LogLevel
 import com.moengage.internal.utils.log
-import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 
 /**
@@ -31,7 +31,7 @@ internal class CentralPortalRepository(private val service: CentralPortalService
      * @since 0.0.1
      */
     fun uploadArtifact(name: String, publishingType: String, file: File): String? {
-        val uploadFile = RequestBody.create(MediaType.get("application/octet-stream"), file)
+        val uploadFile = file.asRequestBody("application/octet-stream".toMediaType())
         val multipart = MultipartBody.Part.createFormData("bundle", file.name, uploadFile)
         val uploadResponse = service.uploadRepository(name, publishingType, multipart).execute()
 
