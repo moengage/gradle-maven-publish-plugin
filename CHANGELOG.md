@@ -1,3 +1,18 @@
+# Release Date
+
+## Release Version
+
+- [major] MOEN-44438: Gradle wrapper updated from `8.6` to `9.3.1`
+- [major] MOEN-44438: `gradle/libs.versions.toml` updates
+  |                       Library / Plugin                              | Current Version     | Next Version       |
+  |:-------------------------------------------------------------------:|:-------------------:|:------------------:|
+  | org.jetbrains.kotlin:kotlin-stdlib                                  | 2.0.0               | 2.3.20             |
+  | org.jetbrains.kotlin.jvm (plugin)                                   | 2.0.0               | 2.3.20             |
+  | org.jetbrains.kotlin.plugin.serialization (plugin)                  | 2.0.0               | 2.3.20             |
+  | org.jetbrains.kotlinx:kotlinx-serialization-json                    | 1.7.1               | 1.11.0             |
+  | com.squareup.retrofit2:retrofit (+ converters)                      | 2.11.0              | 3.0.0              |
+  | com.gradle.plugin-publish (plugin)                                  | 1.2.1               | 2.1.1              |
+
 # 4-3-2025
 
 ## 1.1.0

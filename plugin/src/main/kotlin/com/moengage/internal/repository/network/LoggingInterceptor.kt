@@ -20,10 +20,10 @@ internal class LoggingInterceptor(private val releasePortal: ArtifactReleasePort
 
     override fun intercept(chain: Interceptor.Chain): Response {
         log(message = "$tag intercept(): -------- Network Request ------------")
-        log(message = "$tag intercept(): Url - ${chain.request().url()}")
-        log(message = "$tag intercept(): Method - ${chain.request().method()}")
-        log(message = "$tag intercept(): Header - ${chain.request().headers()}")
-        log(message = "$tag intercept(): Content Type - ${chain.request().body()?.contentType()}")
+        log(message = "$tag intercept(): Url - ${chain.request().url}")
+        log(message = "$tag intercept(): Method - ${chain.request().method}")
+        log(message = "$tag intercept(): Header - ${chain.request().headers}")
+        log(message = "$tag intercept(): Content Type - ${chain.request().body?.contentType()}")
         if (releasePortal != ArtifactReleasePortal.CENTRAL_PORTAL) {
             log(message = "$tag intercept(): Body - ${getRequestBodyTextFromRequest(chain.request())}")
         }
@@ -32,9 +32,9 @@ internal class LoggingInterceptor(private val releasePortal: ArtifactReleasePort
 
         log(message = "$tag intercept(): -------- Network Response ------------")
         log(message = "$tag intercept(): Status - ${response.isSuccessful}")
-        log(message = "$tag intercept(): Response Code - ${response.code()}")
-        log(message = "$tag intercept(): Headers - ${response.headers()}}")
-        log(message = "$tag intercept(): Message - ${response.message()}")
+        log(message = "$tag intercept(): Response Code - ${response.code}")
+        log(message = "$tag intercept(): Headers - ${response.headers}}")
+        log(message = "$tag intercept(): Message - ${response.message}")
 
         return response
     }
@@ -42,7 +42,7 @@ internal class LoggingInterceptor(private val releasePortal: ArtifactReleasePort
     private fun getRequestBodyTextFromRequest(request: Request): String {
         return try {
             val buffer = Buffer()
-            request.newBuilder().build().body()?.writeTo(buffer)
+            request.newBuilder().build().body?.writeTo(buffer)
             buffer.readUtf8()
         } catch (t: Throwable) {
             "Failed to parse request body!!"
