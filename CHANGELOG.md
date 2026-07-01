@@ -1,9 +1,9 @@
-# Release Date
+# 01-07-2026
 
-## Release Version
+## 2.0.1
 
-- [major] MOEN-44438: Gradle wrapper updated from `8.6` to `9.3.1`
-- [major] MOEN-44438: `gradle/libs.versions.toml` updates
+- MOEN-44438: Gradle wrapper updated from `8.6` to `9.3.1`
+- MOEN-44438: `gradle/libs.versions.toml` updates
   |                       Library / Plugin                              | Current Version     | Next Version       |
   |:-------------------------------------------------------------------:|:-------------------:|:------------------:|
   | org.jetbrains.kotlin:kotlin-stdlib                                  | 2.0.0               | 2.3.20             |
